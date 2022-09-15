@@ -1,9 +1,7 @@
-package com.example.bachelor
+package com.example.bachelor.presentation
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
@@ -20,15 +18,17 @@ class CustomView @JvmOverloads constructor(
         strokeWidth = 20f
         color = Color.RED
     }
-
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
+    private val path = Path().apply {
         val centerX = width / 2f
         val centerY = height / 2f
         val radius = 100f
-        paint
-        canvas.drawCircle(centerX, centerY, radius,paint)
+        val oval = RectF(centerX,centerY,centerX+radius,centerY+radius)
+        arcTo(oval,0f,360f,false)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.clipPath(path)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
