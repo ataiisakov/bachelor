@@ -22,9 +22,15 @@ class DetailFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val user = requireArguments().get(ARG_USER) as User
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        with(binding){
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val user = requireArguments().get(ARG_USER) as User
+        with(binding) {
+            userPhotoImageView.transitionName = "userPhoto_${user.id}"
             userPhotoImageView.load(user.photoUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
@@ -32,7 +38,6 @@ class DetailFragment: Fragment() {
             }
             userNameTextView.text = user.name
         }
-        return binding.root
     }
 
 
@@ -43,7 +48,7 @@ class DetailFragment: Fragment() {
 
     companion object {
         private const val ARG_USER = "ARG_USER"
-        fun newInstance(user: User):DetailFragment {
+        fun newInstance(user: User): DetailFragment {
             val fragment = DetailFragment()
             fragment.arguments = bundleOf(ARG_USER to user)
             return fragment

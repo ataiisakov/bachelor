@@ -7,21 +7,22 @@
     android:paddingVertical="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id="@+id/userImageView"
+        android:id="@+id/userPhotoImageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
         tools:src="@drawable/ic_round_account_circle_56"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/userNameTextView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="8dp"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="@id/userImageView"
-        app:layout_constraintBottom_toBottomOf="@id/userImageView"
-        app:layout_constraintStart_toEndOf="@id/userImageView"
+        app:layout_constraintBottom_toBottomOf="@id/userPhotoImageView"
+        app:layout_constraintStart_toEndOf="@id/userPhotoImageView"
+        app:layout_constraintTop_toTopOf="@id/userPhotoImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Some txt"/>
+        tools:text="Some txt" />
 </androidx.constraintlayout.widget.ConstraintLayout>

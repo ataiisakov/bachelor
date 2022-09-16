@@ -24,12 +24,13 @@ class UsersAdapter(
         fun bind(user: User){
             with(binding){
                 root.tag = user
-                userImageView.load(user.photoUrl) {
+                userPhotoImageView.load(user.photoUrl) {
                     crossfade(true)
                     transformations(CircleCropTransformation())
                     placeholder(R.drawable.ic_round_account_circle_56)
                 }
-                userNameTextView.text = user.name;
+                userPhotoImageView.transitionName = "userPhoto_${user.id}"
+                userNameTextView.text = user.name
             }
         }
     }
