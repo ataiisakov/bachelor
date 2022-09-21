@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/detail_fragment_scene">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:transitionGroup="true"
         android:paddingTop="10dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userNameTextView"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -25,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_round_account_circle_56" />
-    </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
 
     <TextView
@@ -38,23 +40,23 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Detail View" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameTextView">
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:padding="10dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/userNameTextView">-->
 
-        <TextView
-            android:id="@+id/longTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lorem_text"
-            android:textSize="18sp"
-            tools:text="@string/lorem_text" />
-    </ScrollView>
-</androidx.constraintlayout.motion.widget.MotionLayout>
+    <!--        <TextView-->
+    <!--            android:id="@+id/longTextView"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/lorem_text"-->
+    <!--            android:textSize="18sp"-->
+    <!--            tools:text="@string/lorem_text" />-->
+    <!--    </ScrollView>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

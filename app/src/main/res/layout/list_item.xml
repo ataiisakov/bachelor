@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingVertical="8dp">
+
     <ImageView
         android:id="@+id/userPhotoImageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
         tools:src="@drawable/ic_round_account_circle_56"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/userNameTextView"
@@ -24,5 +25,5 @@
         app:layout_constraintStart_toEndOf="@id/userPhotoImageView"
         app:layout_constraintTop_toTopOf="@id/userPhotoImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Some txt" />
+        tools:text="Some txsssssssss" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
-
 import com.example.bachelor.databinding.ListItemBinding
 import com.example.bachelor.model.User
 
-typealias onListItemClickListener = (User) -> Unit
+typealias onListItemClickListener = (User, View?) -> Unit
 
 class UsersAdapter(
     private val listener: onListItemClickListener
@@ -24,12 +23,15 @@ class UsersAdapter(
         fun bind(user: User){
             with(binding){
                 root.tag = user
+                root.transitionName = String.format(
+                    root.resources.getString(R.string.shared_container_transition),
+                    user.id
+                )
                 userPhotoImageView.load(user.photoUrl) {
                     crossfade(true)
                     transformations(CircleCropTransformation())
                     placeholder(R.drawable.ic_round_account_circle_56)
                 }
-                userPhotoImageView.transitionName = "userPhoto_${user.id}"
                 userNameTextView.text = user.name
             }
         }
@@ -50,7 +52,7 @@ class UsersAdapter(
 
     override fun onClick(v: View?) {
         val user = v?.tag as User
-        listener.invoke(user)
+        listener.invoke(user, v)
     }
 
 }

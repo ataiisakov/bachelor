@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -28,9 +29,12 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         val user = requireArguments().get(ARG_USER) as User
         with(binding) {
-            userPhotoImageView.transitionName = "userPhoto_${user.id}"
+            root.transitionName =
+                String.format(resources.getString(R.string.shared_container_transition), user.id)
             userPhotoImageView.load(user.photoUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
