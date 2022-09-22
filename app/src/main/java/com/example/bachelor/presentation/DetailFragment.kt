@@ -30,11 +30,12 @@ class DetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
         val user = requireArguments().get(ARG_USER) as User
         with(binding) {
-            root.transitionName =
-                String.format(resources.getString(R.string.shared_container_transition), user.id)
+            userPhotoImageView.transitionName =
+                String.format(resources.getString(R.string.shared_image_transition), user.id)
+            userNameTextView.transitionName =
+                String.format(resources.getString(R.string.shared_name_transition), user.id)
             userPhotoImageView.load(user.photoUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
@@ -42,6 +43,10 @@ class DetailFragment: Fragment() {
             }
             userNameTextView.text = user.name
         }
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+
     }
 
 

@@ -1,14 +1,16 @@
 package com.example.bachelor
 
 import android.os.Bundle
+import android.transition.Fade
+import android.transition.TransitionInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.DetailFragment
 import com.example.bachelor.presentation.ListFragment
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialElevationScale
 
 class MainActivity : AppCompatActivity(), Navigator {
 
@@ -28,18 +30,34 @@ class MainActivity : AppCompatActivity(), Navigator {
         val detailFragment = DetailFragment.newInstance(user)
         val homeFragment = supportFragmentManager.fragments.last()
 
-        detailFragment.sharedElementEnterTransition = MaterialContainerTransform()
-        detailFragment.sharedElementReturnTransition = MaterialContainerTransform()
+        detailFragment.sharedElementEnterTransition = TransitionInflater.from(this)
+            .inflateTransition(R.transition.default_transition)
+        detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
+            .inflateTransition(R.transition.default_transition)
+        detailFragment.enterTransition = Fade()
 
-        homeFragment.exitTransition = MaterialElevationScale(false)
-        homeFragment.reenterTransition = MaterialElevationScale(true)
+
+        val photo = view.findViewById<ImageView>(R.id.userPhotoImageView)
+        val name = view.findViewById<TextView>(R.id.userNameTextView)
+
+        homeFragment.exitTransition = Fade()
+        homeFragment.reenterTransition = Fade()
 
         supportFragmentManager
             .commit {
+                setReorderingAllowed(true)
+
                 addSharedElement(
-                    view,
+                    photo,
                     String.format(
-                        resources.getString(R.string.shared_container_transition),
+                        resources.getString(R.string.shared_image_transition),
+                        user.id
+                    )
+                )
+                addSharedElement(
+                    name,
+                    String.format(
+                        resources.getString(R.string.shared_name_transition),
                         user.id
                     )
                 )

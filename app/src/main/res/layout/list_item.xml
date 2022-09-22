@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,23 +8,37 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="8dp">
 
-    <ImageView
-        android:id="@+id/userPhotoImageView"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        tools:src="@drawable/ic_round_account_circle_56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/userNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingHorizontal="8dp"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/userPhotoImageView"
-        app:layout_constraintStart_toEndOf="@id/userPhotoImageView"
-        app:layout_constraintTop_toTopOf="@id/userPhotoImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Some txsssssssss" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userPhotoImageView"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:transitionName="@string/shared_image_transition"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_round_account_circle_56" />
+
+            <TextView
+                android:id="@+id/userNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:transitionName="@string/shared_name_transition"
+                app:layout_constraintBottom_toBottomOf="@id/userPhotoImageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/userPhotoImageView"
+                app:layout_constraintTop_toTopOf="@id/userPhotoImageView"
+                tools:text="Some text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

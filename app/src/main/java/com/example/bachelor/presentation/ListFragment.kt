@@ -29,7 +29,6 @@ class ListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
         val adapter = UsersAdapter(listener = object : onListItemClickListener {
             override fun invoke(user: User, view: View?) {
                 navigator().showDetails(user, view)
@@ -40,6 +39,7 @@ class ListFragment: Fragment() {
             recycleView.adapter = adapter
         }
         adapter.submitList(UserRepository.users)
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     override fun onDestroyView() {

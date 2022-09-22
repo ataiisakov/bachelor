@@ -5,5 +5,6 @@
 
 Nibh ipsum consequat nisl vel pretium. Nunc sed id semper risus in hendrerit gravida rutrum. Pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Sit amet massa vitae tortor condimentum lacinia. Integer enim neque volutpat ac tincidunt vitae semper quis. Pellentesque habitant morbi tristique senectus et netus et. Malesuada fames ac turpis egestas. Cursus in hac habitasse platea dictumst quisque sagittis purus. Egestas sed sed risus pretium. Nunc lobortis mattis aliquam faucibus purus in massa tempor. Auctor augue mauris augue neque gravida in. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Et ligula ullamcorper malesuada proin libero nunc consequat interdum. Posuere morbi leo urna molestie. Lectus nulla at volutpat diam ut venenatis tellus in. Bibendum enim facilisis gravida neque convallis a cras semper.
     </string>
-    <string name="shared_container_transition">transitionContainer_%1$d</string>
+    <string name="shared_image_transition">transitionImage_%1$d</string>
+    <string name="shared_name_transition">transitionName_%1$d</string>
 </resources>

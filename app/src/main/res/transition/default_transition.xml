@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@integer/short_duration"
+    android:transitionOrdering="together">
+    <explode />
+    <changeBounds />
+    <changeTransform />
+    <!--    long text-->
+    <fade android:fadingMode="fade_in">
+        <targets>
+            <target android:targetId="@+id/scrollView" />
+        </targets>
+    </fade>
+</transitionSet>

@@ -23,8 +23,12 @@ class UsersAdapter(
         fun bind(user: User){
             with(binding){
                 root.tag = user
-                root.transitionName = String.format(
-                    root.resources.getString(R.string.shared_container_transition),
+                userPhotoImageView.transitionName = String.format(
+                    root.resources.getString(R.string.shared_image_transition),
+                    user.id
+                )
+                userNameTextView.transitionName = String.format(
+                    root.resources.getString(R.string.shared_name_transition),
                     user.id
                 )
                 userPhotoImageView.load(user.photoUrl) {
