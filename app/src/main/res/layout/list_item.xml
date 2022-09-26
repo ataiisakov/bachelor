@@ -20,7 +20,6 @@
                 android:id="@+id/userPhotoImageView"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:transitionName="@string/shared_image_transition"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_round_account_circle_56" />
@@ -31,7 +30,6 @@
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="8dp"
-                android:transitionName="@string/shared_name_transition"
                 app:layout_constraintBottom_toBottomOf="@id/userPhotoImageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/userPhotoImageView"

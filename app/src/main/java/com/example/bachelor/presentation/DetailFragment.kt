@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import coil.load
-import coil.transform.CircleCropTransformation
-import com.example.bachelor.R
 import com.example.bachelor.databinding.DetailFragmentBinding
 import com.example.bachelor.model.User
 
@@ -31,18 +28,8 @@ class DetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         val user = requireArguments().get(ARG_USER) as User
-        with(binding) {
-            userPhotoImageView.transitionName =
-                String.format(resources.getString(R.string.shared_image_transition), user.id)
-            userNameTextView.transitionName =
-                String.format(resources.getString(R.string.shared_name_transition), user.id)
-            userPhotoImageView.load(user.photoUrl) {
-                crossfade(true)
-                transformations(CircleCropTransformation())
-                placeholder(R.drawable.ic_round_account_circle_56)
-            }
-            userNameTextView.text = user.name
-        }
+        val userDetailsView = binding.userDetailsView
+        userDetailsView.user = user
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
