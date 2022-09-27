@@ -7,42 +7,50 @@
     android:layout_height="match_parent"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <ImageView
-        android:id="@+id/userPhotoImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toTopOf="@id/userNameTextView"
-        app:layout_constraintBottom_toTopOf="@id/userNameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <Space
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_round_account_circle_56" />
+        app:layout_constraintBottom_toTopOf="@id/userPhotoImageView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#1250BC"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
         android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/space"
+        app:layout_constraintTop_toTopOf="@id/space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        tools:text="Detail View" />
+
+    <ImageView
+        android:id="@+id/userPhotoImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userPhotoImageView"
-        tools:text="Detail View" />
+        app:layout_constraintTop_toBottomOf="@id/space"
+        tools:src="@drawable/ic_round_account_circle_56" />
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameTextView">
+        app:layout_constraintTop_toBottomOf="@id/userPhotoImageView">
 
         <TextView
             android:id="@+id/long_text"
