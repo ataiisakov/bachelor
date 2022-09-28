@@ -58,8 +58,8 @@ class UserDetailsView : ConstraintLayout {
     private val path = Path()
     private val curveBgPath = Path()
     private val photoOval = RectF()
-    private val FACTOR = 0.5
-    val handlePoint = PointF()
+    private val BG_FACTOR = 0.5
+    private val handlePoint = PointF()
 
     private val paintPhotoBorder = Paint().apply {
         isAntiAlias = true
@@ -114,7 +114,7 @@ class UserDetailsView : ConstraintLayout {
             bottom = photoBottom
         }
 
-        val userBgHeight = (userPhoto.height * FACTOR).toFloat() + photoTop
+        val userBgHeight = (userPhoto.height * BG_FACTOR).toFloat() + photoTop
         bgBoundsRectF.apply {
             left = this@UserDetailsView.left.toFloat()
             top = this@UserDetailsView.top.toFloat()
@@ -123,6 +123,7 @@ class UserDetailsView : ConstraintLayout {
         }
 
         path.apply {
+            reset()
             moveTo(bgBoundsRectF.left, bgBoundsRectF.top)
             lineTo(bgBoundsRectF.left, bgBoundsRectF.bottom)
             arcTo(photoOval, -180f, 180f, false)
@@ -131,7 +132,6 @@ class UserDetailsView : ConstraintLayout {
             close()
         }
         canvas.drawPath(path, backgroundPaint)
-        path.reset()
     }
 
     private fun drawCurvedPathBackground(canvas: Canvas) {
@@ -139,12 +139,13 @@ class UserDetailsView : ConstraintLayout {
 
         val topCurvedBg = bgBoundsRectF.top + space.y + space.height.toFloat() / 3
 
-
         handlePoint.apply {
             x = bgBoundsRectF.left + (bgBoundsRectF.width() * 0.25f)
             y = topCurvedBg
         }
+
         curveBgPath.apply {
+            reset()
             moveTo(bgBoundsRectF.left, bgBoundsRectF.bottom)
             arcTo(photoOval, -180f, 180f, false)
             lineTo(bgBoundsRectF.right, bgBoundsRectF.bottom)
@@ -157,7 +158,6 @@ class UserDetailsView : ConstraintLayout {
         }
         curvedBgPaint.shader = createRadialGradient()
         canvas.drawPath(curveBgPath, curvedBgPaint)
-        curveBgPath.reset()
     }
 
     private fun createRadialGradient(): RadialGradient {
@@ -168,7 +168,7 @@ class UserDetailsView : ConstraintLayout {
         )
 
         val stops = floatArrayOf(
-            0.25f,
+            0.3f,
             0.8f
         )
 
