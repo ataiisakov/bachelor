@@ -15,7 +15,7 @@
         app:layout_constraintTop_toBottomOf="@id/userNameTextView"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.example.bachelor.presentation.UserDetailsView
+        <com.example.bachelor.presentation.views.UserDetailsView
             android:id="@+id/userDetailsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

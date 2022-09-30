@@ -33,6 +33,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.example.bachelor'
 }
 ext {
     androidx_core_ktx = "1.8.0"

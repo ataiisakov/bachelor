@@ -8,5 +8,7 @@
         android:id="@+id/long_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:text="@string/lorem_text"
         android:textSize="18sp" />
 </androidx.core.widget.NestedScrollView>

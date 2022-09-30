@@ -1,58 +1,19 @@
-package com.example.bachelor.presentation
+package com.example.bachelor.presentation.views
 
 import android.content.Context
 import android.graphics.*
-import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.annotation.AttrRes
-import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
-import coil.load
-import coil.transform.CircleCropTransformation
+import android.view.View
+import android.widget.ImageView
+import android.widget.Space
 import com.example.bachelor.R
-import com.example.bachelor.databinding.UserDetailsViewBinding
-import com.example.bachelor.model.User
 import com.example.bachelor.utils.toPx
 
+class ProfileBackgroundView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
-class UserDetailsView : ConstraintLayout {
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs, 0)
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int)
-            : super(context, attrs, defStyleAttr)
-
-
-    private var _binding: UserDetailsViewBinding? = null
-    private val binding get() = _binding!!
-
-    init {
-        val inflater = LayoutInflater.from(context)
-        _binding = UserDetailsViewBinding.inflate(inflater, this)
-    }
-
-    var user: User? = null
-        set(value) {
-            value ?: return
-            field = value
-//          transition names needed for animation
-            with(binding) {
-                userPhotoImageView.transitionName =
-                    String.format(resources.getString(R.string.shared_image_transition), value.id)
-                userNameTextView.transitionName =
-                    String.format(resources.getString(R.string.shared_name_transition), value.id)
-//          set user properties to views
-                userNameTextView.text = value.name
-                userPhotoImageView.load(value.photoUrl) {
-                    crossfade(true)
-                    transformations(CircleCropTransformation())
-                    placeholder(R.drawable.ic_round_account_circle_56)
-                }
-                longText.text = context.resources.getText(R.string.lorem_text)
-            }
-        }
 
     private val bgBoundsRectF = RectF()
     private val path = Path()
@@ -60,6 +21,21 @@ class UserDetailsView : ConstraintLayout {
     private val photoOval = RectF()
     private val BG_FACTOR = 0.5
     private val handlePoint = PointF()
+
+
+    lateinit var space: Space
+    lateinit var userPhotoImageView: ImageView
+
+    //    private val binding get() = _binding!!
+//    private var _binding: MotionCoordinationHeaderBinding? = null
+    lateinit var view: View
+
+    init {
+        val inflater = LayoutInflater.from(context)
+        view = inflater.inflate(R.layout.motion_coordination_header, parent, false)
+        space = findViewById(R.id.space)
+        userPhotoImageView = findViewById(R.id.userPhotoImageView)
+    }
 
     private val paintPhotoBorder = Paint().apply {
         isAntiAlias = true
@@ -80,24 +56,21 @@ class UserDetailsView : ConstraintLayout {
         color = resources.getColor(R.color.dark_blue_bg_profile)
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
-        drawPathBackground(canvas)
-        drawCurvedPathBackground(canvas)
-        drawPhotoBorder(canvas)
-        super.dispatchDraw(canvas)
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawLine(0f, 0f, 100f, 100f, paintPhotoBorder)
+//        drawPathBackground(canvas)
+//        drawCurvedPathBackground(canvas)
     }
+//    override fun onDraw(canvas: Canvas) {
+//        drawPathBackground(canvas)
+//        drawCurvedPathBackground(canvas)
+//        super.onDraw(canvas)
+//    }
 
-    private fun drawPhotoBorder(canvas: Canvas) {
-        val userPhoto = binding.userPhotoImageView
-
-        val photoRadius = userPhoto.width / 2f
-        val cx = userPhoto.x + photoRadius
-        val cy = userPhoto.y + photoRadius
-        canvas.drawCircle(cx, cy, photoRadius, paintPhotoBorder)
-    }
 
     private fun drawPathBackground(canvas: Canvas) {
-        val userPhoto = binding.userPhotoImageView
+        val userPhoto = userPhotoImageView
 
         val photoRadius = userPhoto.width / 2f
         val centerPhotoX = userPhoto.x + photoRadius
@@ -116,9 +89,9 @@ class UserDetailsView : ConstraintLayout {
 
         val userBgHeight = (userPhoto.height * BG_FACTOR).toFloat() + photoTop
         bgBoundsRectF.apply {
-            left = this@UserDetailsView.left.toFloat()
-            top = this@UserDetailsView.top.toFloat()
-            right = this@UserDetailsView.right.toFloat()
+            left = this@ProfileBackgroundView.left.toFloat()
+            top = this@ProfileBackgroundView.top.toFloat()
+            right = this@ProfileBackgroundView.right.toFloat()
             bottom = userBgHeight
         }
 
@@ -135,8 +108,7 @@ class UserDetailsView : ConstraintLayout {
     }
 
     private fun drawCurvedPathBackground(canvas: Canvas) {
-        val space = binding.space
-
+        val space = space
         val topCurvedBg = bgBoundsRectF.top + space.y + space.height.toFloat() / 3
 
         handlePoint.apply {
@@ -185,5 +157,4 @@ class UserDetailsView : ConstraintLayout {
             Shader.TileMode.CLAMP
         )
     }
-
 }

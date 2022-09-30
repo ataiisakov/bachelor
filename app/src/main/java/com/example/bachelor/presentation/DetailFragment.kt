@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import com.example.bachelor.databinding.DetailFragmentBinding
+import com.example.bachelor.R
+import com.example.bachelor.databinding.MotionCoordinationBinding
 import com.example.bachelor.model.User
+import com.example.bachelor.presentation.views.UserDetailsView
 
 class DetailFragment: Fragment() {
     private val binding get() = _binding!!
-    private var _binding: DetailFragmentBinding? = null
+    private var _binding: MotionCoordinationBinding? = null
 
 
     override fun onCreateView(
@@ -20,7 +23,7 @@ class DetailFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DetailFragmentBinding.inflate(inflater, container, false)
+        _binding = MotionCoordinationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -28,7 +31,8 @@ class DetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         val user = requireArguments().get(ARG_USER) as User
-        val userDetailsView = binding.userDetailsView
+        val userDetailsView =
+            binding.root.findViewById<MotionLayout>(R.id.motionLayout) as UserDetailsView
         userDetailsView.user = user
         view.doOnPreDraw {
             startPostponedEnterTransition()
