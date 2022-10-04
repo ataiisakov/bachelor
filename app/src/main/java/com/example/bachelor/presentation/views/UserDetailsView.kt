@@ -33,10 +33,13 @@ class UserDetailsView : ConstraintLayout {
             LayoutInflater.from(context),
             this, true
         )
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         profileBackgroundView = binding.background
         profileBackgroundView.setViews(binding.space, binding.userPhotoImageView)
     }
-
 
     var user: User? = null
         set(value) {

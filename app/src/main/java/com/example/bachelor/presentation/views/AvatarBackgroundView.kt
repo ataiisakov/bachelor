@@ -7,9 +7,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Space
 import com.example.bachelor.R
+import com.example.bachelor.utils.toDp
 import com.example.bachelor.utils.toPx
 
-class ProfileBackgroundView @JvmOverloads constructor(
+class AvatarBackgroundView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
@@ -17,34 +18,17 @@ class ProfileBackgroundView @JvmOverloads constructor(
     private val bgBoundsRectF = RectF()
     private val path = Path()
     private val curveBgPath = Path()
-    private val photoOval = RectF()
-    private val BG_FACTOR = 0.5
     private val handlePoint = PointF()
 
 
-    lateinit var space: Space
-    lateinit var userPhoto: ImageView
-
-    fun setViews(space: Space, userPhotoImageView: ImageView) {
-        this.space = space
-        this.userPhoto = userPhotoImageView
-        requestLayout()
-    }
-
-    init {
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
         bgBoundsRectF.apply {
-            left = this@ProfileBackgroundView.left.toFloat()
-            right = this@ProfileBackgroundView.right.toFloat()
-            top = this@ProfileBackgroundView.top.toFloat()
-            bottom = this@ProfileBackgroundView.bottom.toFloat()
+            this.left = this@AvatarBackgroundView.left.toFloat()
+            this.right = this@AvatarBackgroundView.right.toFloat()
+            this.top = this@AvatarBackgroundView.top.toFloat()
+            this.bottom = this@AvatarBackgroundView.bottom.toFloat()
         }
-    }
-
-    private val paintPhotoBorder = Paint().apply {
-        isAntiAlias = true
-        style = Paint.Style.STROKE
-        color = Color.WHITE
-        strokeWidth = 10.toPx().toFloat()
     }
 
     private val backgroundPaint = Paint().apply {
@@ -61,51 +45,23 @@ class ProfileBackgroundView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        this.space
-        this.userPhoto
+        val hDp = height.toDp()
+
         drawPathBackground(canvas)
-        drawCurvedPathBackground(canvas)
-        drawPhotoBorder(canvas)
+//        draw only if height is more than 100 dp
+        if(hDp > 100){
+            drawCurvedPathBackground(canvas)
+        }
     }
 
-    private fun drawPhotoBorder(canvas: Canvas) {
-        val photoRadius = userPhoto.width / 2f
-        val cx = userPhoto.x + photoRadius
-        val cy = userPhoto.y + photoRadius
-        canvas.drawCircle(cx, cy, photoRadius, paintPhotoBorder)
-    }
+
 
     private fun drawPathBackground(canvas: Canvas) {
-
-
-        val photoRadius = userPhoto.width / 2f
-        val centerPhotoX = userPhoto.x + photoRadius
-        val photoBottom = userPhoto.y + (userPhoto.height).toFloat()
-
-        val photoLeft = userPhoto.x
-        val photoTop = userPhoto.y
-        val photoRight = centerPhotoX + photoRadius
-
-        photoOval.apply {
-            left = photoLeft
-            top = photoTop
-            right = photoRight
-            bottom = photoBottom
-        }
-
-        val userBgHeight = (userPhoto.height * BG_FACTOR).toFloat() + photoTop
-        bgBoundsRectF.apply {
-            left = this@ProfileBackgroundView.left.toFloat()
-            top = this@ProfileBackgroundView.top.toFloat()
-            right = this@ProfileBackgroundView.right.toFloat()
-            bottom = userBgHeight
-        }
 
         path.apply {
             reset()
             moveTo(bgBoundsRectF.left, bgBoundsRectF.top)
             lineTo(bgBoundsRectF.left, bgBoundsRectF.bottom)
-            arcTo(photoOval, -180f, 180f, false)
             lineTo(bgBoundsRectF.right, bgBoundsRectF.bottom)
             lineTo(bgBoundsRectF.right, bgBoundsRectF.top)
             close()
@@ -115,7 +71,7 @@ class ProfileBackgroundView @JvmOverloads constructor(
 
     private fun drawCurvedPathBackground(canvas: Canvas) {
 
-        val topCurvedBg = bgBoundsRectF.top + space.y + space.height.toFloat() / 3
+        val topCurvedBg = bgBoundsRectF.height() * 0.2f
 
         handlePoint.apply {
             x = bgBoundsRectF.left + (bgBoundsRectF.width() * 0.25f)
@@ -125,7 +81,6 @@ class ProfileBackgroundView @JvmOverloads constructor(
         curveBgPath.apply {
             reset()
             moveTo(bgBoundsRectF.left, bgBoundsRectF.bottom)
-            arcTo(photoOval, -180f, 180f, false)
             lineTo(bgBoundsRectF.right, bgBoundsRectF.bottom)
             lineTo(bgBoundsRectF.right, topCurvedBg)
             quadTo(
