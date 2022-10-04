@@ -7,10 +7,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.transition.doOnEnd
 import androidx.fragment.app.commit
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.DetailFragment
 import com.example.bachelor.presentation.ListFragment
+import com.example.bachelor.presentation.views.ProfileBackgroundView
 
 class MainActivity : AppCompatActivity(), Navigator {
 
@@ -31,7 +33,13 @@ class MainActivity : AppCompatActivity(), Navigator {
         val homeFragment = supportFragmentManager.fragments.last()
 
         detailFragment.sharedElementEnterTransition = TransitionInflater.from(this)
-            .inflateTransition(R.transition.default_transition)
+            .inflateTransition(R.transition.default_transition).apply {
+                doOnEnd {
+                    val profileBackgroundView =
+                        detailFragment.view?.findViewById<ProfileBackgroundView>(R.id.background)
+                    profileBackgroundView?.requestLayout()
+                }
+            }
         detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
             .inflateTransition(R.transition.default_transition)
         detailFragment.enterTransition = Fade()

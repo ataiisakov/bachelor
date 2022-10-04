@@ -3,7 +3,6 @@ package com.example.bachelor.presentation.views
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Space
@@ -24,17 +23,12 @@ class ProfileBackgroundView @JvmOverloads constructor(
 
 
     lateinit var space: Space
-    lateinit var userPhotoImageView: ImageView
+    lateinit var userPhoto: ImageView
 
-    //    private val binding get() = _binding!!
-//    private var _binding: MotionCoordinationHeaderBinding? = null
-    lateinit var view: View
-
-    init {
-        val inflater = LayoutInflater.from(context)
-        view = inflater.inflate(R.layout.motion_coordination_header, parent, false)
-        space = findViewById(R.id.space)
-        userPhotoImageView = findViewById(R.id.userPhotoImageView)
+    fun setViews(space: Space, userPhotoImageView: ImageView) {
+        this.space = space
+        this.userPhoto = userPhotoImageView
+        requestLayout()
     }
 
     private val paintPhotoBorder = Paint().apply {
@@ -58,19 +52,22 @@ class ProfileBackgroundView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawLine(0f, 0f, 100f, 100f, paintPhotoBorder)
-//        drawPathBackground(canvas)
-//        drawCurvedPathBackground(canvas)
+        this.space
+        this.userPhoto
+        drawPathBackground(canvas)
+        drawCurvedPathBackground(canvas)
+        drawPhotoBorder(canvas)
     }
-//    override fun onDraw(canvas: Canvas) {
-//        drawPathBackground(canvas)
-//        drawCurvedPathBackground(canvas)
-//        super.onDraw(canvas)
-//    }
 
+    private fun drawPhotoBorder(canvas: Canvas) {
+        val photoRadius = userPhoto.width / 2f
+        val cx = userPhoto.x + photoRadius
+        val cy = userPhoto.y + photoRadius
+        canvas.drawCircle(cx, cy, photoRadius, paintPhotoBorder)
+    }
 
     private fun drawPathBackground(canvas: Canvas) {
-        val userPhoto = userPhotoImageView
+
 
         val photoRadius = userPhoto.width / 2f
         val centerPhotoX = userPhoto.x + photoRadius
@@ -108,7 +105,7 @@ class ProfileBackgroundView @JvmOverloads constructor(
     }
 
     private fun drawCurvedPathBackground(canvas: Canvas) {
-        val space = space
+
         val topCurvedBg = bgBoundsRectF.top + space.y + space.height.toFloat() / 3
 
         handlePoint.apply {

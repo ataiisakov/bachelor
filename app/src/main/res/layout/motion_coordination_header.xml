@@ -5,26 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layoutDescription="@xml/scene_header"
+    android:layout_height="match_parent"
+    tools:layout_height="200dp"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <!--    <FrameLayout-->
-    <!--        android:id="@id/background"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
     <com.example.bachelor.presentation.views.ProfileBackgroundView
         android:id="@id/background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <Space
         android:id="@+id/space"
@@ -58,6 +46,7 @@
         app:layout_constraintEnd_toEndOf="@id/background"
         app:layout_constraintStart_toStartOf="@id/background"
         app:layout_constraintTop_toBottomOf="@id/space"
+        app:layout_constraintBottom_toBottomOf="@id/background"
         tools:src="@drawable/ic_round_account_circle_56" />
 
 
