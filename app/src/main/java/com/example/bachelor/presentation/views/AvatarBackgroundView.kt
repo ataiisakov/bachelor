@@ -4,11 +4,8 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import android.widget.ImageView
-import android.widget.Space
 import com.example.bachelor.R
 import com.example.bachelor.utils.toDp
-import com.example.bachelor.utils.toPx
 
 class AvatarBackgroundView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -89,33 +86,7 @@ class AvatarBackgroundView @JvmOverloads constructor(
             )
             close()
         }
-        curvedBgPaint.shader = createRadialGradient()
         canvas.drawPath(curveBgPath, curvedBgPaint)
     }
 
-    private fun createRadialGradient(): RadialGradient {
-
-        val colors = intArrayOf(
-            resources.getColor(R.color.light_blue_bg_profile),
-            resources.getColor(R.color.dark_blue_bg_profile)
-        )
-
-        val stops = floatArrayOf(
-            0.3f,
-            0.8f
-        )
-
-        val centerX = bgBoundsRectF.width() / 2f
-        val centerY = bgBoundsRectF.bottom
-
-        val radius = bgBoundsRectF.width() / 2f
-
-        return RadialGradient(
-            centerX, centerY,
-            radius,
-            colors,
-            stops,
-            Shader.TileMode.CLAMP
-        )
-    }
 }

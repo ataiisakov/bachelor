@@ -1,53 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_height="200dp"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    android:layout_height="250dp"
+    app:layoutDescription="@xml/motion_coordination_header_scene">
 
-    <com.example.bachelor.presentation.views.ProfileBackgroundView
-        android:id="@id/background"
+    <com.example.bachelor.presentation.views.AvatarBackgroundView
+        android:id="@+id/avatarBackgroundView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <Space
-        android:id="@+id/space"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@id/userPhotoImageView"
-        app:layout_constraintLeft_toLeftOf="@id/background"
-        app:layout_constraintRight_toRightOf="@id/background"
-        app:layout_constraintTop_toTopOf="@id/background" />
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/userNameTextView"
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@color/white"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@id/iv"
+        app:layout_constraintEnd_toEndOf="@id/avatarBackgroundView"
+        app:layout_constraintStart_toStartOf="@id/avatarBackgroundView"
+        app:layout_constraintTop_toTopOf="@id/avatarBackgroundView"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/space"
-        app:layout_constraintEnd_toEndOf="@id/space"
-        app:layout_constraintStart_toStartOf="@id/space"
-        app:layout_constraintTop_toTopOf="@id/space"
-        app:layout_constraintVertical_bias="0.7"
-        tools:textColor="@color/black"
         tools:text="Detail View" />
 
     <ImageView
-        android:id="@+id/userPhotoImageView"
+        android:id="@+id/iv"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toEndOf="@id/background"
-        app:layout_constraintStart_toStartOf="@id/background"
-        app:layout_constraintTop_toBottomOf="@id/space"
-        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/tv"
+        app:layout_constraintStart_toStartOf="@id/tv"
+        app:layout_constraintTop_toBottomOf="@id/iv"
         tools:src="@drawable/ic_round_account_circle_56" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

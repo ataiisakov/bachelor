@@ -9,19 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.bachelor.databinding.ListItemBinding
+import com.example.bachelor.databinding.ListItemHeaderBinding
 import com.example.bachelor.model.User
 
 typealias onListItemClickListener = (User, View?) -> Unit
 
 class UsersAdapter(
     private val listener: onListItemClickListener
-): ListAdapter<User,UsersAdapter.UserViewHolder>(UserDiffCallback), View.OnClickListener {
+) : ListAdapter<User, RecyclerView.ViewHolder>(UserDiffCallback), View.OnClickListener {
 
     class UserViewHolder(
         private val binding: ListItemBinding
-    ): RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User){
-            with(binding){
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(user: User) {
+            with(binding) {
                 root.tag = user
                 userPhotoImageView.transitionName = String.format(
                     root.resources.getString(R.string.shared_image_transition),
@@ -41,15 +42,33 @@ class UsersAdapter(
         }
     }
 
+    class HeaderViewHolder(
+        private val binding: ListItemHeaderBinding
+    ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> ItemViewHolderType.ListItemHeader().pos
+            else -> ItemViewHolderType.ListItem().pos
+        }
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
+        if (viewType == ItemViewHolderType.ListItemHeader().pos) {
+            val binding = ListItemHeaderBinding.inflate(layoutInflater, parent, false)
+            return HeaderViewHolder(binding)
+        }
         val binding = ListItemBinding.inflate(layoutInflater, parent, false)
         binding.root.setOnClickListener(this)
         return UserViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder !is UserViewHolder) return
+
         val user = getItem(position)
         holder.bind(user)
     }
@@ -69,4 +88,8 @@ object UserDiffCallback: DiffUtil.ItemCallback<User>(){
         return oldItem == newItem
     }
 
+}
+sealed class ItemViewHolderType(val pos: Int) {
+    class ListItemHeader(pos: Int = 0) : ItemViewHolderType(pos)
+    class ListItem(pos: Int = 1) : ItemViewHolderType(pos)
 }
