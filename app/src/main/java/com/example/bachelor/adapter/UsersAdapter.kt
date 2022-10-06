@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.bachelor.databinding.ListItemBinding
-import com.example.bachelor.databinding.ListItemHeaderBinding
 import com.example.bachelor.model.User
 
 typealias onListItemClickListener = (User, View?) -> Unit
@@ -42,35 +41,18 @@ class UsersAdapter(
         }
     }
 
-    class HeaderViewHolder(
-        private val binding: ListItemHeaderBinding
-    ) : RecyclerView.ViewHolder(binding.root)
-
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> ItemViewHolderType.ListItemHeader().pos
-            else -> ItemViewHolderType.ListItem().pos
-        }
-    }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        if (viewType == ItemViewHolderType.ListItemHeader().pos) {
-            val binding = ListItemHeaderBinding.inflate(layoutInflater, parent, false)
-            return HeaderViewHolder(binding)
-        }
         val binding = ListItemBinding.inflate(layoutInflater, parent, false)
         binding.root.setOnClickListener(this)
         return UserViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder !is UserViewHolder) return
-
-        val user = getItem(position)
-        holder.bind(user)
+        if (holder is UserViewHolder) {
+            val user = currentList[position]
+            holder.bind(user)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -78,18 +60,14 @@ class UsersAdapter(
         listener.invoke(user, v)
     }
 
-}
-object UserDiffCallback: DiffUtil.ItemCallback<User>(){
-    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.id == newItem.id
-    }
+    object UserDiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem == newItem
-    }
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem == newItem
+        }
 
-}
-sealed class ItemViewHolderType(val pos: Int) {
-    class ListItemHeader(pos: Int = 0) : ItemViewHolderType(pos)
-    class ListItem(pos: Int = 1) : ItemViewHolderType(pos)
+    }
 }
