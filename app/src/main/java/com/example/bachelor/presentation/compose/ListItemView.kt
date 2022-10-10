@@ -1,4 +1,4 @@
-package com.example.bachelor.presentation
+package com.example.bachelor.presentation.compose
 
 
 import androidx.compose.foundation.layout.Row
@@ -38,7 +38,9 @@ fun UserListItem(user: User) {
                     .build(),
                 placeholder = painterResource(id = R.drawable.ic_round_account_circle_56),
                 contentDescription = null,
-                modifier = Modifier.size(56.dp).clip(CircleShape)
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
             )
             Text(modifier = Modifier.padding(horizontal = 8.dp), text = user.name)
         }
