@@ -70,6 +70,8 @@ dependencies {
     // Integration with observables
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
+    //Navigation
+    implementation "androidx.navigation:navigation-compose:$rootProject.compose_navigation_version"
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //  End Compose Deps

@@ -1,18 +1,20 @@
 package com.example.bachelor.presentation.compose
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.PointF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,9 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -34,50 +34,69 @@ import com.example.bachelor.presentation.theme.LightBlue
 
 @Composable
 fun UserDetailCard(user: User) {
-    Column {
-        UserDetailHeader(user = user)
-        UserDetailContentText()
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val (header, body) = createRefs()
+        UserDetailHeader(
+            user = user,
+            modifier = Modifier
+                .constrainAs(header) {
+                    linkTo(
+                        top = parent.top,
+                        start = parent.start,
+                        end = parent.end,
+                        bottom = body.top
+                    )
+                    width = Dimension.matchParent
+                    height = Dimension.value(250.dp)
+                }
+        )
+        UserDetailContentText(modifier = Modifier
+            .padding(20.dp)
+            .constrainAs(body) {
+                linkTo(
+                    top = header.bottom,
+                    start = parent.start,
+                    end = parent.end,
+                    bottom = parent.bottom
+                )
+                height = Dimension.fillToConstraints
+                width = Dimension.matchParent
+            }
+        )
     }
-
 }
 
 @Composable
 fun UserDetailHeader(user: User, modifier: Modifier = Modifier) {
-    val constrains = ConstraintSet {
-        val text = createRefFor("text")
-        val img = createRefFor("img")
-        val bg = createRefFor("bg")
-
-        constrain(bg) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.fillToConstraints
-            height = Dimension.value(200.dp)
-        }
-        constrain(text) {
-            top.linkTo(bg.top, margin = 80.dp)
-            start.linkTo(bg.start)
-            end.linkTo(bg.end)
-            bottom.linkTo(img.top)
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-        }
-        constrain(img) {
-            start.linkTo(text.start)
-            end.linkTo(text.end)
-            top.linkTo(text.bottom, margin = 30.dp)
-            width = Dimension.value(100.dp)
-            height = Dimension.value(100.dp)
-        }
-        createVerticalChain(bg, chainStyle = ChainStyle.Packed(0f))
-    }
-    ConstraintLayout(constraintSet = constrains, modifier = modifier.fillMaxSize()) {
-        UserDetailsBackground(modifier = Modifier.layoutId("bg"))
+    ConstraintLayout(modifier = modifier) {
+        val (text, image, background) = createRefs()
+        UserDetailsBackground(modifier = Modifier
+            .constrainAs(background) {
+                linkTo(
+                    top = parent.top,
+                    start = parent.start,
+                    end = parent.end,
+                    bottom = parent.bottom,
+                    verticalBias = 0f
+                )
+                width = Dimension.matchParent
+                height = Dimension.value(200.dp)
+            }
+        )
         Text(
-            text = "Something",
-            modifier = Modifier.layoutId("text"),
+            text = user.name,
+            modifier = Modifier
+                .constrainAs(text) {
+                    linkTo(
+                        start = background.start,
+                        end = background.end,
+                        top = background.top,
+                        bottom = image.top,
+                        topMargin = 80.dp
+                    )
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                },
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 30.sp)
         )
         AsyncImage(
@@ -89,7 +108,15 @@ fun UserDetailHeader(user: User, modifier: Modifier = Modifier) {
             contentDescription = null,
             modifier = Modifier
                 .clip(CircleShape)
-                .layoutId("img")
+                .constrainAs(image) {
+                    linkTo(
+                        start = text.start,
+                        end = text.end,
+                    )
+                    top.linkTo(text.bottom, margin = 30.dp)
+                    width = Dimension.value(100.dp)
+                    height = Dimension.value(100.dp)
+                }
         )
     }
 }
@@ -143,15 +170,10 @@ fun UserDetailsBackground(modifier: Modifier = Modifier) {
     })
 }
 
-@Preview
-@Composable
-fun UserDetailsBackgroundPreview() {
-    UserDetailHeader(user = User(1, "", ""))
-}
-
-//@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun UserDetailCardPreview() {
-//    val user = User(1, "", "")
-    UserDetailCard(user = User(1, "", ""))
+    Surface {
+        UserDetailCard(user = User(1, "Detail View", ""))
+    }
 }

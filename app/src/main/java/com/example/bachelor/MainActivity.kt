@@ -1,29 +1,24 @@
 package com.example.bachelor
 
 import android.os.Bundle
-import android.transition.Fade
-import android.transition.TransitionInflater
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import com.example.bachelor.model.User
-import com.example.bachelor.presentation.DetailFragment
-import com.example.bachelor.presentation.ListFragment
+import androidx.compose.material.Surface
+import com.example.bachelor.presentation.theme.MyCustomTheme
 
-class MainActivity : AppCompatActivity(), Navigator {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                add(R.id.fragmentContainer, ListFragment())
+        setContent {
+            MyCustomTheme {
+                Surface {
+
+                }
             }
         }
     }
-
+/*
     override fun showDetails(user: User, view: View?) {
         view ?: return
 
@@ -63,5 +58,5 @@ class MainActivity : AppCompatActivity(), Navigator {
                 replace(R.id.fragmentContainer, detailFragment)
                 addToBackStack(null)
             }
-    }
+    }*/
 }
