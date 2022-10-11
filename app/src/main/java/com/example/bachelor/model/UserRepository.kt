@@ -25,4 +25,6 @@ object UserRepository {
                 photoUrl = photos[it % photos.size]
             )
         } .toList()
+
+    fun getUserById(id:Long): User = users.first { id == it.id }
 }

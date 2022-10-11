@@ -32,11 +32,16 @@ import com.example.bachelor.model.User
 import com.example.bachelor.presentation.theme.DarkBlue
 import com.example.bachelor.presentation.theme.LightBlue
 
+
+@Composable
+fun DetailScreen(user: User) {
+    UserDetailCard(user = user)
+}
 @Composable
 fun UserDetailCard(user: User) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (header, body) = createRefs()
-        UserDetailHeader(
+        Header(
             user = user,
             modifier = Modifier
                 .constrainAs(header) {
@@ -50,7 +55,7 @@ fun UserDetailCard(user: User) {
                     height = Dimension.value(250.dp)
                 }
         )
-        UserDetailContentText(modifier = Modifier
+        Body(modifier = Modifier
             .padding(20.dp)
             .constrainAs(body) {
                 linkTo(
@@ -67,7 +72,7 @@ fun UserDetailCard(user: User) {
 }
 
 @Composable
-fun UserDetailHeader(user: User, modifier: Modifier = Modifier) {
+fun Header(user: User, modifier: Modifier = Modifier) {
     ConstraintLayout(modifier = modifier) {
         val (text, image, background) = createRefs()
         UserDetailsBackground(modifier = Modifier
@@ -122,7 +127,7 @@ fun UserDetailHeader(user: User, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun UserDetailContentText(modifier: Modifier = Modifier) {
+fun Body(modifier: Modifier = Modifier) {
     Column(modifier = modifier
         .fillMaxSize()
         .verticalScroll(rememberScrollState())) {
