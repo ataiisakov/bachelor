@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -60,4 +61,10 @@ fun UserListItem(user: User, onUserClick: (User) -> Unit) {
             Text(modifier = Modifier.padding(horizontal = 8.dp), text = user.name)
         }
     }
+}
+
+@Preview
+@Composable
+fun UserItemPreview() {
+    UserListItem(user = User(1, "", ""), onUserClick = {})
 }
