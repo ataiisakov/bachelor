@@ -1,19 +1,16 @@
 package com.example.bachelor.presentation.compose
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.PointF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,6 +24,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
 import com.example.bachelor.R
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.theme.DarkBlue
@@ -108,11 +106,11 @@ fun Header(user: User, modifier: Modifier = Modifier) {
             model = ImageRequest.Builder(LocalContext.current)
                 .data(user.photoUrl)
                 .crossfade(true)
+                .transformations(CircleCropTransformation())
                 .build(),
             placeholder = painterResource(id = R.drawable.ic_round_account_circle_56),
             contentDescription = null,
             modifier = Modifier
-                .clip(CircleShape)
                 .constrainAs(image) {
                     linkTo(
                         start = text.start,
@@ -175,7 +173,13 @@ fun UserDetailsBackground(modifier: Modifier = Modifier) {
     })
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview
+@Composable
+fun BackgroundPreview() {
+    UserDetailsBackground(modifier = Modifier.fillMaxSize())
+}
+
+//@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun UserDetailCardPreview() {
     Surface {

@@ -9,20 +9,13 @@ object Destinations {
 }
 
 
-sealed class Screen {
-    abstract val route: String
+sealed class Screen(val route: String) {
 
-    object Overview : Screen() {
-        override val route: String = Destinations.HOME_ROUTE
-    }
+    object Overview : Screen(Destinations.HOME_ROUTE)
 
-    object Detail : Screen() {
-        override val route: String = Destinations.DETAIL_ROUTE
-
-        const val userId = "USER_ID_ARG"
-        val routeWithArgs = "${route}/{$userId}"
-        val args = listOf(
-            navArgument(userId) { type = NavType.LongType }
-        )
+    object Detail : Screen(Destinations.DETAIL_ROUTE) {
+        const val userIdTypeArg = "USER_ID_ARG"
+        val routeWithArgs = "${route}/{$userIdTypeArg}"
+        val args = listOf(navArgument(userIdTypeArg) { type = NavType.LongType })
     }
 }
