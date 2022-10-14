@@ -23,14 +23,11 @@ class UsersAdapter(
         fun bind(user: User) {
             with(binding) {
                 root.tag = user
-                userPhotoImageView.transitionName = String.format(
-                    root.resources.getString(R.string.shared_image_transition),
-                    user.id
-                )
-                userNameTextView.transitionName = String.format(
-                    root.resources.getString(R.string.shared_name_transition),
-                    user.id
-                )
+                userPhotoImageView.transitionName =
+                    root.resources.getString(R.string.shared_image_transition, user.id)
+                userNameTextView.transitionName =
+                    root.resources.getString(R.string.shared_name_transition, user.id)
+
                 userPhotoImageView.load(user.photoUrl) {
                     crossfade(true)
                     transformations(CircleCropTransformation())

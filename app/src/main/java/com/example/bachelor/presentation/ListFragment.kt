@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bachelor.UsersAdapter
+import com.example.bachelor.adapter.HeaderAdapter
 import com.example.bachelor.databinding.ListFragmentBinding
 import com.example.bachelor.model.User
 import com.example.bachelor.model.UserRepository
@@ -29,16 +31,18 @@ class ListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
-        val adapter = UsersAdapter(listener = object : onListItemClickListener {
+        val headerAdapter = HeaderAdapter()
+        val usersAdapter = UsersAdapter(listener = object : onListItemClickListener {
             override fun invoke(user: User, view: View?) {
                 navigator().showDetails(user, view)
             }
         })
+        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter)
         with(binding) {
             recycleView.layoutManager = LinearLayoutManager(requireContext())
-            recycleView.adapter = adapter
+            recycleView.adapter = concatAdapter
         }
-        adapter.submitList(UserRepository.users)
+        usersAdapter.submitList(UserRepository.users)
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
 

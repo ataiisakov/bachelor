@@ -45,20 +45,13 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager
             .commit {
                 setReorderingAllowed(true)
-
                 addSharedElement(
                     photo,
-                    String.format(
-                        resources.getString(R.string.shared_image_transition),
-                        user.id
-                    )
+                    resources.getString(R.string.shared_image_transition, user.id)
                 )
                 addSharedElement(
                     name,
-                    String.format(
-                        resources.getString(R.string.shared_name_transition),
-                        user.id
-                    )
+                    resources.getString(R.string.shared_name_transition, user.id)
                 )
                 replace(R.id.fragmentContainer, detailFragment)
                 addToBackStack(null)

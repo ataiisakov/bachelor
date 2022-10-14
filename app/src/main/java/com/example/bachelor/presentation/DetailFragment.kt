@@ -45,9 +45,9 @@ class DetailFragment: Fragment() {
         userPhotoImageView = binding.root.findViewById<ImageView>(R.id.iv)
         userNameTextView = binding.root.findViewById<TextView>(R.id.tv)
         userPhotoImageView.transitionName =
-            String.format(resources.getString(R.string.shared_image_transition), user.id)
+            resources.getString(R.string.shared_image_transition, user.id)
         userNameTextView.transitionName =
-            String.format(resources.getString(R.string.shared_name_transition), user.id)
+            resources.getString(R.string.shared_name_transition, user.id)
         //          set user properties to views
         userNameTextView.text = user.name
         userPhotoImageView.load(user.photoUrl) {
