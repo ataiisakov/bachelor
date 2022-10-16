@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bachelor.UsersAdapter
+import com.example.bachelor.adapter.UsersAdapter
+import com.example.bachelor.adapter.FooterAdapter
 import com.example.bachelor.adapter.HeaderAdapter
 import com.example.bachelor.databinding.ListFragmentBinding
 import com.example.bachelor.model.User
 import com.example.bachelor.model.UserRepository
-import com.example.bachelor.onListItemClickListener
+import com.example.bachelor.adapter.onListItemClickListener
 
 class ListFragment: Fragment() {
     private val binding get() = _binding!!
@@ -30,20 +30,20 @@ class ListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
         val headerAdapter = HeaderAdapter()
+        val footerAdapter = FooterAdapter()
         val usersAdapter = UsersAdapter(listener = object : onListItemClickListener {
             override fun invoke(user: User, view: View?) {
                 navigator().showDetails(user, view)
             }
         })
-        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter)
+        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter,footerAdapter)
         with(binding) {
-            recycleView.layoutManager = LinearLayoutManager(requireContext())
             recycleView.adapter = concatAdapter
         }
         usersAdapter.submitList(UserRepository.users)
-        view.doOnPreDraw { startPostponedEnterTransition() }
+        postponeEnterTransition()
+        binding.recycleView.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     override fun onDestroyView() {

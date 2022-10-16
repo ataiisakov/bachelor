@@ -33,17 +33,17 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
         val user = requireArguments().get(ARG_USER) as User
         setUserDataViews(user)
+        postponeEnterTransition()
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
     }
 
     private fun setUserDataViews(user: User) {
-        userPhotoImageView = binding.root.findViewById<ImageView>(R.id.iv)
-        userNameTextView = binding.root.findViewById<TextView>(R.id.tv)
+        userPhotoImageView = binding.root.findViewById(R.id.iv)
+        userNameTextView   = binding.root.findViewById(R.id.tv)
         userPhotoImageView.transitionName =
             resources.getString(R.string.shared_image_transition, user.id)
         userNameTextView.transitionName =

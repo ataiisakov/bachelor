@@ -23,14 +23,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="25dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@id/iv"
         app:layout_constraintEnd_toEndOf="@id/avatarBackgroundView"
         app:layout_constraintStart_toStartOf="@id/avatarBackgroundView"
         app:layout_constraintTop_toTopOf="@id/avatarBackgroundView"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:text="Detail View" />
+        tools:text="Detail Viewaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
     <ImageView
         android:id="@+id/iv"

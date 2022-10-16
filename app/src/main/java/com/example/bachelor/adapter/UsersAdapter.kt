@@ -1,4 +1,4 @@
-package com.example.bachelor
+package com.example.bachelor.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.bachelor.R
 import com.example.bachelor.databinding.ListItemBinding
 import com.example.bachelor.model.User
 
@@ -23,17 +24,17 @@ class UsersAdapter(
         fun bind(user: User) {
             with(binding) {
                 root.tag = user
-                userPhotoImageView.transitionName =
+                iv.transitionName =
                     root.resources.getString(R.string.shared_image_transition, user.id)
-                userNameTextView.transitionName =
+                tv.transitionName =
                     root.resources.getString(R.string.shared_name_transition, user.id)
 
-                userPhotoImageView.load(user.photoUrl) {
+                iv.load(user.photoUrl) {
                     crossfade(true)
                     transformations(CircleCropTransformation())
                     placeholder(R.drawable.ic_round_account_circle_56)
                 }
-                userNameTextView.text = user.name
+                tv.text = user.name
             }
         }
     }

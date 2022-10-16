@@ -1,8 +1,11 @@
 package com.example.bachelor
 
 import android.os.Bundle
+import android.transition.Explode
 import android.transition.Fade
+import android.transition.Slide
 import android.transition.TransitionInflater
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,13 +37,14 @@ class MainActivity : AppCompatActivity(), Navigator {
             .inflateTransition(R.transition.default_transition)
         detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
             .inflateTransition(R.transition.default_transition)
-        detailFragment.enterTransition = Fade()
+        detailFragment.enterTransition = Slide(Gravity.RIGHT)
+        detailFragment.exitTransition = Slide(Gravity.RIGHT)
 
-        val photo = view.findViewById<ImageView>(R.id.userPhotoImageView)
-        val name = view.findViewById<TextView>(R.id.userNameTextView)
+        val photo = view.findViewById<ImageView>(R.id.iv)
+        val name = view.findViewById<TextView>(R.id.tv)
 
-        homeFragment.exitTransition = Fade()
-        homeFragment.reenterTransition = Fade()
+//        homeFragment.exitTransition = Fade()
+//        homeFragment.reenterTransition = Fade()
 
         supportFragmentManager
             .commit {
