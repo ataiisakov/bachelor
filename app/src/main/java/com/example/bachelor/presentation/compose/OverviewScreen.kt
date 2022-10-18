@@ -12,8 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
@@ -30,8 +32,29 @@ fun OverviewScreen(onUserClick: (User)->Unit = {}) {
 @Composable
 fun UserList(usersList: List<User>, onUserClick: (User) -> Unit) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            HeaderFooterListItem("Header Text")
+        }
         items(items = usersList) { user: User ->
             UserListItem(user = user, onUserClick = onUserClick)
+        }
+        item {
+            HeaderFooterListItem("Footer Text")
+        }
+    }
+}
+
+@Composable
+fun HeaderFooterListItem(text: String) {
+    Card {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .padding(6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(style = TextStyle(fontSize = 30.sp), text = text)
         }
     }
 }
@@ -49,12 +72,13 @@ fun UserListItem(user: User, onUserClick: (User) -> Unit) {
             .build()
     )
 
-    Card(onClick = { onUserClick(user) }) {
+    Card(
+        onClick = { onUserClick(user) }
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Image(
                 painter = painter,
