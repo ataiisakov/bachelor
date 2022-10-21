@@ -73,6 +73,8 @@ fun UserListItem(user: User, onUserClick: (User) -> Unit) {
     )
 
     Card(
+        elevation = 4.dp,
+        modifier = Modifier.padding(6.dp),
         onClick = { onUserClick(user) }
     ) {
         Row(

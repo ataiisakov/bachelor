@@ -2,10 +2,10 @@ package com.example.bachelor.presentation.compose
 
 import android.graphics.PointF
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
@@ -14,9 +14,12 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -36,6 +39,9 @@ import com.example.bachelor.R
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.theme.DarkBlue
 import com.example.bachelor.presentation.theme.LightBlue
+import com.example.bachelor.presentation.theme.Purple500
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.min
 
 
@@ -43,6 +49,7 @@ import kotlin.math.min
 fun DetailScreen(user: User) {
     UserDetailCard(user = user)
 }
+
 @Composable
 fun UserDetailCard(user: User) {
     val scroll = rememberScrollState(0)
@@ -120,6 +127,7 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
         val img = createRefFor("profile_image")
         val txt = createRefFor("profile_name")
         val bg = createRefFor("profile_background")
+        val imgAnim = createRefFor("profile_image_anim")
         val from = constraintSet {
             constrain(img) {
                 linkTo(
@@ -152,16 +160,28 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
                 width = Dimension.wrapContent
                 height = Dimension.wrapContent
             }
+            constrain(imgAnim) {
+                linkTo(
+                    start = img.start,
+                    end = img.end,
+                    top = img.top,
+                    bottom = img.bottom
+                )
+                width = Dimension.value(120.dp)
+                height = Dimension.value(120.dp)
+            }
         }
         val to = constraintSet {
             constrain(img) {
                 linkTo(
                     top = bg.top,
                     bottom = bg.bottom,
+                    topMargin = 10.dp,
+                    bottomMargin = 10.dp
                 )
                 start.linkTo(bg.start, margin = 10.dp)
-                height = Dimension.value(60.dp)
-                width = Dimension.value(60.dp)
+                height = Dimension.value(40.dp)
+                width = Dimension.value(40.dp)
 
             }
             constrain(bg) {
@@ -183,6 +203,16 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
                 end.linkTo(bg.end)
                 scaleX = 0.7f
                 scaleY = 0.7f
+            }
+            constrain(imgAnim) {
+                linkTo(
+                    start = img.start,
+                    end = img.end,
+                    top = img.top,
+                    bottom = img.bottom
+                )
+                width = Dimension.value(60.dp)
+                height = Dimension.value(60.dp)
             }
         }
         defaultTransition(
@@ -217,6 +247,7 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
                 .layoutId("profile_name"),
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 30.sp)
         )
+        ProfilePicAnim(modifier = Modifier.layoutId("profile_image_anim"))
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(user.photoUrl)
@@ -270,6 +301,113 @@ fun UserDetailsBackground(modifier: Modifier = Modifier) {
             drawPath(curvedPath, color = DarkBlue)
         }
     })
+}
+
+@Composable
+fun ProfilePicAnim(modifier: Modifier = Modifier) {
+    var angle by remember {
+        mutableStateOf(0f)
+    }
+    val strokeWidth = with(LocalDensity.current) { 16.dp.toPx() }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = Unit) {
+        scope.launch {
+            animate(0f, 360f, animationSpec = tween(2000)) { value, _ ->
+                angle = value
+            }
+        }
+    }
+    Box(modifier = modifier.padding(10.dp), contentAlignment = Alignment.Center) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+        ) {
+            drawArc(
+                brush = Brush.linearGradient(
+                    listOf(
+                        Color(0xff12c2e9),
+                        Purple500
+                    )
+                ),
+                style = Stroke(
+                    width = strokeWidth,
+                    cap = StrokeCap.Round
+                ),
+                startAngle = 0f,
+                sweepAngle = -angle,
+                useCenter = false
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileTapAnim() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        var alphaAnim by remember {
+            mutableStateOf(0f)
+        }
+        var scaleAnim by remember {
+            mutableStateOf(0f)
+        }
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(key1 = Unit, block = {
+            scope.launch {
+                repeat(5) {
+                    coroutineScope {
+                        launch {
+                            animate(0f, 1f, animationSpec = tween(500)) { value, _ ->
+                                alphaAnim = value
+                            }
+                        }
+                        launch {
+                            animate(0f, 2f, animationSpec = tween(500)) { value, _ ->
+                                scaleAnim = value
+                            }
+                        }
+                    }
+                    coroutineScope {
+                        launch {
+                            animate(1f, 0f, animationSpec = tween(500)) { value, _ ->
+                                alphaAnim = value
+                            }
+                        }
+                        launch {
+                            animate(2f, 4f, animationSpec = tween(500)) { value, _ ->
+                                scaleAnim = value
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        Icon(imageVector = Icons.Filled.Favorite, contentDescription = null, tint = Color.Red,
+            modifier = Modifier
+                .size(56.dp)
+                .align(Alignment.Center)
+                .graphicsLayer {
+                    alpha = alphaAnim
+                    scaleX = scaleAnim
+                    scaleY = scaleAnim
+                })
+    }
+}
+
+
+//@Preview
+@Composable
+fun Preview() {
+    Surface {
+        ProfilePicAnim(modifier = Modifier.size(120.dp))
+    }
+//    Surface {
+//        SimpleAnim()
+//    }
 }
 
 @Preview
