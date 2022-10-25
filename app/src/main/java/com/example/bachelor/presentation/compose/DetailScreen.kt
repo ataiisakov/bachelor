@@ -2,8 +2,13 @@ package com.example.bachelor.presentation.compose
 
 import android.graphics.PointF
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,8 +23,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -27,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -50,6 +58,7 @@ fun DetailScreen(user: User) {
     UserDetailCard(user = user)
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UserDetailCard(user: User) {
     val scroll = rememberScrollState(0)
@@ -68,7 +77,8 @@ fun UserDetailCard(user: User) {
                         start = parent.start,
                         end = parent.end,
                         bottom = body.top,
-                        verticalBias = 0f
+                        verticalBias = 0f,
+                        bottomMargin = 10.dp
                     )
                     width = Dimension.matchParent
                 },
@@ -98,6 +108,8 @@ fun UserDetailCard(user: User) {
                     bottom.linkTo(parent.bottom, 10.dp)
                     end.linkTo(parent.end, 10.dp)
                 },
+            enter = scaleIn(),
+            exit = scaleOut(),
             visible = (progress == 1f)
         ) {
             FloatingActionButton(
@@ -127,7 +139,6 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
         val img = createRefFor("profile_image")
         val txt = createRefFor("profile_name")
         val bg = createRefFor("profile_background")
-        val imgAnim = createRefFor("profile_image_anim")
         val from = constraintSet {
             constrain(img) {
                 linkTo(
@@ -159,16 +170,6 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
                 )
                 width = Dimension.wrapContent
                 height = Dimension.wrapContent
-            }
-            constrain(imgAnim) {
-                linkTo(
-                    start = img.start,
-                    end = img.end,
-                    top = img.top,
-                    bottom = img.bottom
-                )
-                width = Dimension.value(120.dp)
-                height = Dimension.value(120.dp)
             }
         }
         val to = constraintSet {
@@ -204,16 +205,6 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
                 scaleX = 0.7f
                 scaleY = 0.7f
             }
-            constrain(imgAnim) {
-                linkTo(
-                    start = img.start,
-                    end = img.end,
-                    top = img.top,
-                    bottom = img.bottom
-                )
-                width = Dimension.value(60.dp)
-                height = Dimension.value(60.dp)
-            }
         }
         defaultTransition(
             from = from,
@@ -238,31 +229,66 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
         progress = progress
     ) {
         UserDetailsBackground(
-            modifier = Modifier
-                .layoutId("profile_background")
+            modifier = Modifier.layoutId("profile_background")
         )
         Text(
             text = user.name,
-            modifier = Modifier
-                .layoutId("profile_name"),
-            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 30.sp)
+            modifier = Modifier.layoutId("profile_name"),
+            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 30.sp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
-        ProfilePicAnim(modifier = Modifier.layoutId("profile_image_anim"))
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(user.photoUrl)
-                .crossfade(true)
-                .transformations(CircleCropTransformation())
-                .placeholder(R.drawable.ic_round_account_circle_56)
-                .build(),
-            placeholder = painterResource(id = R.drawable.ic_round_account_circle_56),
-            contentDescription = null,
-            modifier = Modifier
-                .layoutId("profile_image")
+        UserProfilePhoto(
+            photoUrl = user.photoUrl,
+            modifier = Modifier.layoutId("profile_image")
         )
     }
 }
 
+@Composable
+fun UserProfilePhoto(modifier: Modifier = Modifier, photoUrl: String) {
+    val rotationAnim = remember { Animatable(0f) }
+    val borderWidth = with(LocalDensity.current) { 8.dp.toPx() }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        scope.launch {
+            rotationAnim.animateTo(
+                targetValue = 720f,
+                animationSpec = tween(
+                    2000,
+                    easing = LinearEasing
+                )
+            )
+        }
+    }
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(photoUrl)
+            .crossfade(true)
+            .transformations(CircleCropTransformation())
+            .placeholder(R.drawable.ic_round_account_circle_56)
+            .build(),
+        placeholder = painterResource(id = R.drawable.ic_round_account_circle_56),
+        contentDescription = null,
+        modifier = modifier
+            .drawBehind {
+                rotate(rotationAnim.value) {
+                    drawCircle(
+                        brush = Brush.linearGradient(
+                            listOf(
+                                Color.Blue,
+                                Color.Red
+                            )
+                        ),
+                        style = Stroke(
+                            width = borderWidth,
+                            cap = StrokeCap.Round
+                        )
+                    )
+                }
+            }
+    )
+}
 
 @Composable
 fun UserDetailsBackground(modifier: Modifier = Modifier) {
@@ -343,10 +369,9 @@ fun ProfilePicAnim(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ProfileTapAnim() {
+fun ProfileTapAnim(clicked: Boolean, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
     ) {
         var alphaAnim by remember {
             mutableStateOf(0f)
@@ -356,7 +381,7 @@ fun ProfileTapAnim() {
         }
         val scope = rememberCoroutineScope()
 
-        LaunchedEffect(key1 = Unit, block = {
+        LaunchedEffect(clicked) {
             scope.launch {
                 repeat(5) {
                     coroutineScope {
@@ -385,7 +410,7 @@ fun ProfileTapAnim() {
                     }
                 }
             }
-        })
+        }
         Icon(imageVector = Icons.Filled.Favorite, contentDescription = null, tint = Color.Red,
             modifier = Modifier
                 .size(56.dp)
@@ -414,7 +439,7 @@ fun Preview() {
 @Composable
 fun BackgroundPreview() {
     Surface {
-        UserDetailCard(user = User(1, "Detail View", ""))
+        UserDetailCard(user = User(1, "Detail Viewaaaaaaaaaaaaaaaaaaaaaaa", ""))
     }
 }
 

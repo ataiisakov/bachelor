@@ -75,6 +75,8 @@ dependencies {
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //  End Compose Deps
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accomponist_version"
+
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat"
