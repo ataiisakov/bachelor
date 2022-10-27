@@ -35,7 +35,7 @@ fun UserList(usersList: List<User>, onUserClick: (User) -> Unit) {
         item {
             HeaderFooterListItem("Header Text")
         }
-        items(items = usersList) { user: User ->
+        items(items = usersList, key = { user -> user.id }) { user: User ->
             UserListItem(user = user, onUserClick = onUserClick)
         }
         item {

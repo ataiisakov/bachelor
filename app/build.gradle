@@ -21,6 +21,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -75,7 +76,11 @@ dependencies {
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //  End Compose Deps
+
+    //accompanist
     implementation "com.google.accompanist:accompanist-navigation-animation:$accomponist_version"
+    //JankStats lib
+    implementation "androidx.metrics:metrics-performance:$jankstats_version"
 
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx"

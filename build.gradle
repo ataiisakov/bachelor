@@ -17,6 +17,7 @@ buildscript {
         compose_constraintlayout = "1.1.0-alpha04"
         compose_navigation_version = "2.6.0-alpha02"
         accomponist_version = "0.25.1"
+        jankstats_version = "1.0.0-alpha03"
     }
     repositories {
         mavenCentral()
