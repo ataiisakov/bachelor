@@ -5,26 +5,60 @@ import android.transition.Explode
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.PerformanceMetricsState
+import com.example.bachelor.databinding.ActivityMainBinding
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.DetailFragment
 import com.example.bachelor.presentation.ListFragment
 
 class MainActivity : AppCompatActivity(), Navigator {
 
+    private lateinit var jankStats: JankStats
+    private val binding get() = _binding!!
+    private var _binding: ActivityMainBinding? = null
+
+    // [START jank_frame_listener]
+    private val jankFrameListener = JankStats.OnFrameListener { frameData ->
+        // A real app could do something more interesting, like writing the info to local storage and later on report it.
+        Log.v("JankStatsSample", frameData.toString())
+    }
+    // [END jank_frame_listener]
+    // [END_EXCLUDE]
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 add(R.id.fragmentContainer, ListFragment())
             }
         }
+        val metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(binding.root)
+        jankStats = JankStats.createAndTrack(window,jankFrameListener)
+        metricsStateHolder.state?.putState("Activity",javaClass.simpleName)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        jankStats.isTrackingEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        jankStats.isTrackingEnabled = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun showDetails(user: User, view: View?) {

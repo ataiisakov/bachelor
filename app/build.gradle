@@ -22,6 +22,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        benchmark {
+            initWith buildTypes.release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+            proguardFiles('benchmark-rules.pro')
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,12 +48,13 @@ dependencies {
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat"
-    implementation "com.google.android.material:material:$material"
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraintlayout"
     implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
+    implementation "androidx.metrics:metrics-performance:$androidx_jank_stats_version"
+    implementation "com.google.android.material:material:$google_material"
     implementation "com.github.javafaker:javafaker:$javafaker"
     implementation "io.coil-kt:coil:$coil"
-    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
 
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
