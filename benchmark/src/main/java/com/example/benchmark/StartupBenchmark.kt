@@ -22,18 +22,26 @@ import org.junit.runner.RunWith
  * for investigating your app's performance.
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleStartupBenchmark {
+class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureRepeated(
-        packageName = "com.example.bachelor.xml",
+    fun startupFullCompilation() = startup(CompilationMode.Full())
+
+    @Test
+    fun startupNoCompilation() = startup(CompilationMode.None())
+
+    private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
+        packageName = PACKAGE_NAME,
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
-        startupMode = StartupMode.COLD
+        startupMode = StartupMode.COLD,
+        setupBlock = {
+            pressHome()
+        }
     ) {
-        pressHome()
         startActivityAndWait()
+        waitForContent()
     }
 }

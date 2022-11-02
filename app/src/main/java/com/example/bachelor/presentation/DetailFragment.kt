@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.metrics.performance.PerformanceMetricsState
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.bachelor.R
@@ -22,6 +23,8 @@ class DetailFragment: Fragment() {
     lateinit var userPhotoImageView: ImageView
     lateinit var userNameTextView: TextView
 
+    private var metricsStateHolder: PerformanceMetricsState.Holder? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +36,8 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(view)
+        metricsStateHolder?.state?.putState("Fragment", javaClass.simpleName)
         val user = requireArguments().get(ARG_USER) as User
         setUserDataViews(user)
         postponeEnterTransition()
@@ -59,8 +64,9 @@ class DetailFragment: Fragment() {
 
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        metricsStateHolder = null
+        super.onDestroyView()
     }
 
     companion object {

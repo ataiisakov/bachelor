@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bachelor.adapter.UsersAdapter
 import com.example.bachelor.adapter.FooterAdapter
 import com.example.bachelor.adapter.HeaderAdapter
+import com.example.bachelor.adapter.UsersAdapter
+import com.example.bachelor.adapter.onListItemClickListener
 import com.example.bachelor.databinding.ListFragmentBinding
 import com.example.bachelor.model.User
 import com.example.bachelor.model.UserRepository
-import com.example.bachelor.adapter.onListItemClickListener
 
 class ListFragment: Fragment() {
     private val binding get() = _binding!!
@@ -53,6 +53,12 @@ class ListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(view)
+        setupAdapters()
+        postponeEnterTransition()
+        binding.recycleView.doOnPreDraw { startPostponedEnterTransition() }
+    }
+
+    private fun setupAdapters() {
         val headerAdapter = HeaderAdapter()
         val footerAdapter = FooterAdapter()
         val usersAdapter = UsersAdapter(listener = object : onListItemClickListener {
@@ -60,14 +66,12 @@ class ListFragment: Fragment() {
                 navigator().showDetails(user, view)
             }
         })
-        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter, footerAdapter)
         with(binding) {
             recycleView.adapter = concatAdapter
             recycleView.addOnScrollListener(scrollListener)
         }
         usersAdapter.submitList(UserRepository.users)
-        postponeEnterTransition()
-        binding.recycleView.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     override fun onDestroyView() {

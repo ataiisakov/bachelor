@@ -1,16 +1,14 @@
 package com.example.bachelor
 
 import android.os.Bundle
-import android.transition.Explode
 import android.transition.Fade
-import android.transition.Slide
 import android.transition.TransitionInflater
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.commit
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
@@ -28,7 +26,10 @@ class MainActivity : AppCompatActivity(), Navigator {
     // [START jank_frame_listener]
     private val jankFrameListener = JankStats.OnFrameListener { frameData ->
         // A real app could do something more interesting, like writing the info to local storage and later on report it.
-        Log.v("JankStatsSample", frameData.toString())
+        Log.v(
+            "JankStatsSample",
+            frameData.toString() + " MillisFrameDuration[${frameData.frameDurationUiNanos / 1e6f}]"
+        )
     }
     // [END jank_frame_listener]
     // [END_EXCLUDE]
@@ -42,8 +43,11 @@ class MainActivity : AppCompatActivity(), Navigator {
             }
         }
         val metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(binding.root)
-        jankStats = JankStats.createAndTrack(window,jankFrameListener)
-        metricsStateHolder.state?.putState("Activity",javaClass.simpleName)
+        jankStats = JankStats.createAndTrack(window, jankFrameListener)
+        metricsStateHolder.state?.putState("Activity", javaClass.simpleName)
+        binding.root.doOnPreDraw {
+            this.reportFullyDrawn()
+        }
     }
 
     override fun onResume() {
@@ -71,14 +75,11 @@ class MainActivity : AppCompatActivity(), Navigator {
             .inflateTransition(R.transition.default_transition)
         detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
             .inflateTransition(R.transition.default_transition)
-        detailFragment.enterTransition = Slide(Gravity.RIGHT)
-        detailFragment.exitTransition = Slide(Gravity.RIGHT)
 
         val photo = view.findViewById<ImageView>(R.id.iv)
         val name = view.findViewById<TextView>(R.id.tv)
 
-//        homeFragment.exitTransition = Fade()
-//        homeFragment.reenterTransition = Fade()
+        homeFragment.reenterTransition = Fade().apply { duration = 300 }
 
         supportFragmentManager
             .commit {
