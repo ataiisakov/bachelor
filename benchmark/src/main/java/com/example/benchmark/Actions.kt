@@ -18,6 +18,7 @@ fun MacrobenchmarkScope.listScrollDownUp() {
 fun MacrobenchmarkScope.goToDetail() {
     val list = device.findObject(By.res(packageName, RECYCLE_VIEW_RES_ID))
     // Select random user from the list
+    list.setGestureMargin(device.displayWidth / 5)
     list.click()
     device.waitForIdle()
 }

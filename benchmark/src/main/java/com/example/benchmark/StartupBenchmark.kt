@@ -26,6 +26,7 @@ class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    // BaselineProfile
     @Test
     fun startupFullCompilation() = startup(CompilationMode.Full())
 
@@ -36,6 +37,7 @@ class StartupBenchmark {
         packageName = PACKAGE_NAME,
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
+        compilationMode = compilationMode,
         startupMode = StartupMode.COLD,
         setupBlock = {
             pressHome()
