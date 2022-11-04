@@ -22,10 +22,10 @@ class FrameTimingBenchmark {
 
 
     @Test
-    fun scrollCompilationNone() = scrollList(CompilationMode.None())
+    fun scrollCompilationNone() = appInteraction(CompilationMode.None())
 
 
-    private fun scrollList(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
+    private fun appInteraction(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         // [START_EXCLUDE]
         packageName = PACKAGE_NAME,
         metrics = listOf(FrameTimingMetric()),
@@ -40,8 +40,52 @@ class FrameTimingBenchmark {
             startActivityAndWait()
         }
     ) {
-        waitForContent()
         listScrollDownUp()
+        goToDetail()
+        detailScrollDownUp()
+        pressBack()
+    }
+
+    @Test
+    fun appInteraction() = benchmarkRule.measureRepeated(
+        packageName = PACKAGE_NAME,
+        metrics = listOf(FrameTimingMetric()),
+        iterations = 2,
+        startupMode = StartupMode.WARM,
+        setupBlock = {
+            pressHome()
+            startActivityAndWait()
+        }
+    ) {
+        listScrollDownUp()
+    }
+
+    @Test
+    fun goToDetail() = benchmarkRule.measureRepeated(
+        packageName = PACKAGE_NAME,
+        metrics = listOf(FrameTimingMetric()),
+        iterations = 5,
+        startupMode = StartupMode.COLD,
+        setupBlock = {
+            pressHome()
+            startActivityAndWait()
+        }
+    ) {
+        waitForContent()
+        goToDetail()
+    }
+
+    @Test
+    fun goToDetailScroll() = benchmarkRule.measureRepeated(
+        packageName = PACKAGE_NAME,
+        metrics = listOf(FrameTimingMetric()),
+        iterations = 1,
+        startupMode = StartupMode.COLD,
+        setupBlock = {
+            pressHome()
+            startActivityAndWait()
+        }
+    ) {
         goToDetail()
         detailScrollDownUp()
     }
