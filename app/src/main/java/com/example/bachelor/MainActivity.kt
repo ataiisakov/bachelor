@@ -3,16 +3,11 @@ package com.example.bachelor
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.commit
-import androidx.metrics.performance.JankStats
-import androidx.metrics.performance.PerformanceMetricsState
-import com.example.bachelor.databinding.ActivityMainBinding
 import com.example.bachelor.model.User
 import com.example.bachelor.presentation.DetailFragment
 import com.example.bachelor.presentation.ListFragment
@@ -36,7 +31,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 add(R.id.fragmentContainer, ListFragment())
@@ -75,25 +70,55 @@ class MainActivity : AppCompatActivity(), Navigator {
             .inflateTransition(R.transition.default_transition)
         detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
             .inflateTransition(R.transition.default_transition)
+        detailFragment.enterTransition = Fade()
 
-        val photo = view.findViewById<ImageView>(R.id.iv)
-        val name = view.findViewById<TextView>(R.id.tv)
+        val photo = view.findViewById<ImageView>(R.id.userPhotoImageView)
+        val name = view.findViewById<TextView>(R.id.userNameTextView)
 
-        homeFragment.reenterTransition = Fade().apply { duration = 300 }
+        homeFragment.exitTransition = Fade()
+        homeFragment.reenterTransition = Fade()
 
         supportFragmentManager
             .commit {
                 setReorderingAllowed(true)
+
                 addSharedElement(
                     photo,
-                    resources.getString(R.string.shared_image_transition, user.id)
+                    String.format(
+                        resources.getString(R.string.shared_image_transition),
+                        user.id
+                    )
                 )
                 addSharedElement(
                     name,
-                    resources.getString(R.string.shared_name_transition, user.id)
+                    String.format(
+                        resources.getString(R.string.shared_name_transition),
+                        user.id
+                    )
                 )
                 replace(R.id.fragmentContainer, detailFragment)
                 addToBackStack(null)
             }
+    }
+}
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            App()
+        }
+    }
+
+    @OptIn(ExperimentalAnimationApi::class)
+    @Composable
+    fun App() {
+        MyCustomTheme {
+            val navController = rememberAnimatedNavController()
+            Scaffold { innerPadding ->
+                AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
+            }
+        }
     }
 }

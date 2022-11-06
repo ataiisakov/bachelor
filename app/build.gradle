@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.example.bachelor"
@@ -19,17 +19,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
-        }
-        benchmark {
-            initWith buildTypes.release
-            signingConfig signingConfigs.debug
-            matchingFallbacks = ['release']
-            debuggable false
-            proguardFiles('benchmark-rules.pro')
         }
     }
     compileOptions {
@@ -42,20 +33,64 @@ android {
     buildFeatures {
         viewBinding true
     }
-    aaptOptions {
-        additionalParameters = ["--warn-manifest-validation"]
-    }
-    lintOptions {
-        checkReleaseBuilds false
-    }
     namespace 'com.example.bachelor'
 }
-
+ext {
+    androidx_core_ktx = "1.8.0"
+    androidx_constraintlayout = "2.1.4"
+    androidx_fragment_ktx = "1.5.2"
+    androidx_appcompat = "1.5.1"
+    material = "1.6.1"
+    javafaker = "1.0.2"
+    coil = "2.2.1"
+    junit = "4.13.2"
+    androidx_junit = "1.1.3"
+    androidx_espresso_core = "3.4.0"
+}
 
 dependencies {
+//  Start Compose Deps
+    // To use constraintlayout in compose
+    implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraintlayout"
+    //Compose UI, Compiler
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.compiler:compiler:$compose_compiler"
+    // Tooling support (Previews, etc.)
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    // Material Design
+    implementation "androidx.compose.material:material:$compose_version"
+    // Animations
+    implementation "androidx.compose.animation:animation:$compose_version"
+    // Material design icons
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.5.1'
+    //Coil
+    implementation "io.coil-kt:coil-compose:$coil"
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    // Integration with observables
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    //Navigation
+    implementation "androidx.navigation:navigation-compose:$rootProject.compose_navigation_version"
+    // UI Tests
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+//  End Compose Deps
+
+    //accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accomponist_version"
+    //JankStats lib
+    implementation "androidx.metrics:metrics-performance:$jankstats_version"
+
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "com.google.android.material:material:$material"
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraintlayout"
     implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx"
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
@@ -63,6 +98,7 @@ dependencies {
     implementation "com.google.android.material:material:$google_material"
     implementation "com.github.javafaker:javafaker:$javafaker"
     implementation "io.coil-kt:coil:$coil"
+
 
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
