@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                motion:framePosition="85"
+                motion:motionTarget="@id/tv" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/avatarBackgroundView"
+            android:layout_height="80dp" />
+        <Constraint
+            android:id="@+id/iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            motion:layout_constraintBottom_toBottomOf="@id/avatarBackgroundView"
+            motion:layout_constraintStart_toStartOf="@id/avatarBackgroundView"
+            motion:layout_constraintTop_toTopOf="@+id/avatarBackgroundView" />
+
+        <Constraint
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            motion:layout_constraintBottom_toBottomOf="@id/avatarBackgroundView"
+            motion:layout_constraintEnd_toEndOf="@id/avatarBackgroundView"
+            motion:layout_constraintTop_toTopOf="@+id/avatarBackgroundView" />
+    </ConstraintSet>
+</MotionScene>

@@ -2,6 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <queries>
-        <package android:name="com.example.bachelor.xml" />
+        <package android:name="com.example.xml" />
     </queries>
 </manifest>

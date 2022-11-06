@@ -13,5 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "bachelor"
-include ':app'
+include ':shared'
 include ':benchmark'
+include ':xml'
+include ':compose'

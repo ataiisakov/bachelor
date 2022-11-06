@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.benchmark'
-    compileSdk 32
+    compileSdk 33
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,7 +40,7 @@ android {
         }
     }
 
-    targetProjectPath = ":app"
+    targetProjectPath = ":xml"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
