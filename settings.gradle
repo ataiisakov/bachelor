@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "bachelor"
 include ':shared'
-include ':benchmark'
 include ':xml'
+include ':xml:benchmark'
 include ':compose'
+include ':compose:benchmark'

@@ -11,10 +11,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/benchmark" />
             <option value="$PROJECT_DIR$/compose" />
+            <option value="$PROJECT_DIR$/compose/benchmark" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/xml" />
+            <option value="$PROJECT_DIR$/xml/benchmark" />
           </set>
         </option>
       </GradleProjectSettings>

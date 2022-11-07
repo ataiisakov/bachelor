@@ -1,4 +1,4 @@
-package com.example.bachelor.presentation.theme
+package com.example.compose.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

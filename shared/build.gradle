@@ -32,15 +32,7 @@ android {
 
 dependencies {
 
-
-    implementation "androidx.core:core-ktx:$androidx_core_ktx"
-    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
-    implementation "com.google.android.material:material:$material"
-    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraintlayout"
-    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx"
     implementation "com.github.javafaker:javafaker:$javafaker"
-    implementation "io.coil-kt:coil:$coil"
-
 
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidx_junit"

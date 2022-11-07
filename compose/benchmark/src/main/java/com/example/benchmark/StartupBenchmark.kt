@@ -1,5 +1,6 @@
 package com.example.benchmark
 
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
@@ -21,18 +22,21 @@ import org.junit.runner.RunWith
  * for investigating your app's performance.
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleStartupBenchmark {
+class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "com.example.application",
+        packageName = PACKAGE_NAME,
         metrics = listOf(StartupTimingMetric()),
+        compilationMode = CompilationMode.None(),
         iterations = 5,
-        startupMode = StartupMode.COLD
+        startupMode = StartupMode.COLD,
+        setupBlock = {
+            pressHome()
+        }
     ) {
-        pressHome()
         startActivityAndWait()
     }
 }

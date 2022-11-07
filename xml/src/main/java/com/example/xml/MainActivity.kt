@@ -12,7 +12,6 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.commit
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
-import com.example.xml.R
 import com.example.bachelor.model.User
 import com.example.xml.databinding.ActivityMainBinding
 import com.example.xml.presentation.DetailFragment
@@ -81,8 +80,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         val photo = view.findViewById<ImageView>(R.id.iv)
         val name = view.findViewById<TextView>(R.id.tv)
 
-        homeFragment.exitTransition = Fade()
-        homeFragment.reenterTransition = Fade()
 
         supportFragmentManager
             .commit {

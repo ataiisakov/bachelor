@@ -1,4 +1,4 @@
-package com.example.bachelor.presentation.theme
+package com.example.compose.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

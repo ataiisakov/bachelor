@@ -44,10 +44,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.bachelor.model.User
-import com.example.bachelor.presentation.theme.DarkBlue
-import com.example.bachelor.presentation.theme.LightBlue
-import com.example.bachelor.presentation.theme.Purple500
 import com.example.compose.R
+import com.example.compose.rememberMetricsStateHolder
+import com.example.compose.theme.DarkBlue
+import com.example.compose.theme.LightBlue
+import com.example.compose.theme.Purple500
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.min
@@ -61,6 +62,10 @@ fun DetailScreen(user: User) {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UserDetailCard(user: User) {
+    val metricsStateHolder = rememberMetricsStateHolder()
+    metricsStateHolder.state?.putState("ComposeDetail", "UserDetailCard")
+
+
     val scroll = rememberScrollState(0)
     val big = 200.dp
     val small = 60.dp

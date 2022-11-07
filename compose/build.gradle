@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.example.compose'
     compileSdk 33
 
     defaultConfig {
@@ -15,12 +16,21 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        benchmark {
+            initWith buildTypes.release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+            proguardFiles('benchmark-rules.pro')
         }
     }
     compileOptions {
@@ -37,7 +47,6 @@ android {
         viewBinding true
         compose true
     }
-    namespace 'com.example.compose'
 }
 
 dependencies {
@@ -50,11 +59,6 @@ dependencies {
     implementation "androidx.compose.compiler:compiler:$compose_compiler"
     // Tooling support (Previews, etc.)
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     implementation "androidx.compose.foundation:foundation:$compose_version"
@@ -66,16 +70,16 @@ dependencies {
     implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation "androidx.activity:activity-compose:$androidx_compose_activity"
     //Coil
     implementation "io.coil-kt:coil-compose:$coil"
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$androidx_viewmodel"
     // Integration with observables
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
     //Navigation
-    implementation "androidx.navigation:navigation-compose:$rootProject.compose_navigation_version"
+    implementation "androidx.navigation:navigation-compose:$compose_navigation_version"
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //  End Compose Deps
@@ -85,16 +89,9 @@ dependencies {
     //JankStats lib
     implementation "androidx.metrics:metrics-performance:$jankstats_version"
 
-
     implementation "androidx.core:core-ktx:$androidx_core_ktx"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat"
     implementation "com.google.android.material:material:$material"
-    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraintlayout"
-    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx"
-    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
-    implementation "androidx.metrics:metrics-performance:$jankstats_version"
-    implementation "com.google.android.material:material:$material"
-    implementation "io.coil-kt:coil:$coil"
 
 
     testImplementation "junit:junit:$junit"
