@@ -37,7 +37,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ..addListener(() {
           progress = min(1.0, _scrollController.offset.toDouble() / _bgHeight);
           setState(() {
-              _bgHeight = lerpDouble(200.0, 60.0, progress)!;
+              _bgHeight = lerpDouble(200.0, 80.0, progress)!;
               _textScale = lerpDouble(1.0, 0.75, progress)!;
               _imageRadius = lerpDouble(50.0, 20.0, progress)!;
               if(progress == 1) {
@@ -55,7 +55,6 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _buildProfile(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
           width: double.infinity,
@@ -64,23 +63,16 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 _buildProfileHeader(context),
                 _buildProfileBody(),
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 500),
-                  opacity: _opacity,
-                  child: Positioned(
-                        left:   (size.width - 50.0),
-                        bottom: (size.height - 50.0),
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Icon(
-                            Icons.camera
-                          ),
-                        ),
-                  ),
-                )
               ]
           )
+      ),
+      floatingActionButton:  AnimatedOpacity(
+        duration: Duration(milliseconds: 500),
+        opacity: _opacity,
+        child: Icon(
+          Icons.camera,
+          size: 40,
+        ),
       ),
     );
   }
@@ -127,7 +119,7 @@ class _DetailScreenState extends State<DetailScreen> {
           scrollDirection: Axis.vertical,
             child: Container(
               padding:
-                  const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 50),
+                  const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
               child: Text(lorem(paragraphs: 4, words: 500)),
             ),
         )
