@@ -33,9 +33,9 @@ class ProfileBackground extends CustomPainter {
     var paint = Paint()..color = lightBlue;
     var bgPaint = Paint()..color = darkBlue;
 
-    canvas.drawPath(curvedPath, paint);
+    canvas.drawPath(pathBg, bgPaint);
     if (height > 100) {
-      canvas.drawPath(pathBg, bgPaint);
+      canvas.drawPath(curvedPath, paint);
     }
   }
 

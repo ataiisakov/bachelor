@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:app_flutter/widgets/profile_background.dart';
 import 'package:flutter/material.dart';
@@ -15,47 +16,37 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen>
-    with SingleTickerProviderStateMixin {
+class _DetailScreenState extends State<DetailScreen> {
   late ScrollController _scrollController;
-  late AnimationController _controller;
 
-  late Animation<double> _bgHeightAnim;
-  late Animation<double> _textScaleAnim;
-  late Animation<double> _imgSizeAnim;
-  late Animation<double> _imgPosAnim;
-
-  double _startBackgoundHeight = 200;
-  double _endBackgroundHeight = 60;
-  double _imageRadius = 50;
-  double _profileHeaderHeight = 265;
-  double _targetProfileHeight = 80;
+  double _bgHeight = 265;
+  double _imageRadius = 50.0;
+  double _textScale = 1.0;
+  double progress = 0.0;
+  double _imgX = 0;
+  double _imgY = 0;
+  double _textX = 0;
+  double _textY = 0;
+  double _opacity = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this);
     _scrollController = ScrollController()
-      ..addListener(() {
-        var progress = min(
-            1.0,
-            _scrollController.offset.toDouble() /
-                (_bgHeightAnim.value.toDouble()));
-        setState(() {
-          _controller.value = progress;
+        ..addListener(() {
+          progress = min(1.0, _scrollController.offset.toDouble() / _bgHeight);
+          setState(() {
+              _bgHeight = lerpDouble(200.0, 60.0, progress)!;
+              _textScale = lerpDouble(1.0, 0.75, progress)!;
+              _imageRadius = lerpDouble(50.0, 20.0, progress)!;
+              if(progress == 1) {
+                _opacity = 1;
+              } else {
+                _opacity = 0;
+              }
+          });
         });
-      });
-
-    _bgHeightAnim = Tween(begin: 200.0, end: 60.0).animate(_controller);
-    _textScaleAnim = Tween(begin: 1.0, end: 0.75).animate(_controller);
-    _imgSizeAnim = Tween(begin: 50.0, end: 20.0).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -64,43 +55,66 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   Widget _buildProfile(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
           width: double.infinity,
           alignment: Alignment.center,
           child: Column(
-              children: [_buildProfileHeader(context), _buildProfileBody()])),
+              children: [
+                _buildProfileHeader(context),
+                _buildProfileBody(),
+                AnimatedOpacity(
+                  duration: Duration(milliseconds: 500),
+                  opacity: _opacity,
+                  child: Positioned(
+                        left:   (size.width - 50.0),
+                        bottom: (size.height - 50.0),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: Icon(
+                            Icons.camera
+                          ),
+                        ),
+                  ),
+                )
+              ]
+          )
+      ),
     );
   }
 
   Widget _buildProfileHeader(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return SizedBox(
-      height: _bgHeightAnim.value,
+      height: _bgHeight,
       child: Stack(
+        clipBehavior: Clip.none,
         children: <Widget>[
           CustomPaint(
             painter: ProfileBackground(),
-            size: Size(screenSize.width, _startBackgoundHeight),
+            size: Size(screenSize.width, _bgHeight),
           ),
           Positioned(
               left: screenSize.width / 2 - _imageRadius,
-              top: _startBackgoundHeight - 100,
+              top: _bgHeight * 0.5,
               child: Column(
                 children: [
-                  Text(
-                    widget.user.name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 33),
-                    textScaleFactor: _textScaleAnim.value,
-                  ),
+                  // Text(
+                  //   widget.user.name,
+                  //   style: const TextStyle(
+                  //       fontWeight: FontWeight.bold, fontSize: 33),
+                  //   textScaleFactor: _textScale,
+                  // ),
                   Container(height: 15),
                   CircleAvatar(
                     backgroundImage: NetworkImage(widget.user.photoUrl),
-                    radius: _imgSizeAnim.value,
+                    radius: _imageRadius,
                   )
                 ],
-              ))
+              )
+          )
         ],
       ),
     );
@@ -109,12 +123,14 @@ class _DetailScreenState extends State<DetailScreen>
   Widget _buildProfileBody() {
     return Expanded(
         child: SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Container(
-        padding:
-            const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 50),
-        child: Text(lorem(paragraphs: 4, words: 500)),
-      ),
-    ));
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
+            child: Container(
+              padding:
+                  const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 50),
+              child: Text(lorem(paragraphs: 4, words: 500)),
+            ),
+        )
+    );
   }
 }
