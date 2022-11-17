@@ -23,24 +23,47 @@ class _ListUser extends State<ListUser> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(child: Card(child: Text("Header"))),
-        Expanded(child: _buildList()),
-        Container(child: Card(child: Text("Footer")))
-      ]
-    );
+    return _buildList();
   }
   Widget _buildList(){
     return ListView.builder(
         itemCount: users.length,
         itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return Column(
+              children: [
+                _buildHeaderFooter("Header"),
+                _buildListTile(context, index)
+              ],
+            );
+          }
+          if (index == users.length - 1) {
+            return Column(
+              children: [
+                _buildListTile(context, index),
+                _buildHeaderFooter("Footer")
+              ],
+            );
+          }
           return _buildListTile(context, index);
         });
   }
 
   Widget _buildListTile(BuildContext context, int index) {
     return UserTile(user: users.elementAt(index));
+  }
+
+  Widget _buildHeaderFooter(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+      child: Card(
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          title: Text(text),
+        ),
+      ),
+    );
   }
 }
 
@@ -59,14 +82,29 @@ class UserTile extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
             title: Text(user.name),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DetailScreen(user: user)));
+              Navigator.of(context)
+                  .push(_createRoute(DetailScreen(user: user)));
             },
             leading: CircleAvatar(
               backgroundImage: NetworkImage(user.photoUrl),
             ),
           ),
-        )
-    );
+        ));
+  }
+
+  Route _createRoute(Widget param) {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => param,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+          var tweet =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tweet),
+            child: child,
+          );
+        });
   }
 }

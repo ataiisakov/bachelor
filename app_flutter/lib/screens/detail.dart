@@ -27,7 +27,7 @@ class _DetailScreenState extends State<DetailScreen> {
               delegate: _SliverAppBarDelegate(
                   minHeight: 80.0, maxHeight: 200.0, user: widget.user),
             ),
-            padding: EdgeInsets.only(bottom: 60)),
+            padding: const EdgeInsets.only(bottom: 70)),
         SliverList(
             delegate: SliverChildListDelegate([
           Container(
@@ -69,39 +69,49 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         Container(
           height: lerpDouble(maxHeight + imgRadius + 10, minHeight, progress),
         ),
+        //Background
         CustomPaint(
           painter: ProfileBackground(),
           size: Size(double.infinity, maxHeight),
         ),
+        //User Name
         Positioned(
-            left: lerpDouble(width / 2 - imgRadius, width - 100, progress),
+            left:
+                lerpDouble((width / 2.0) - (imgRadius), width - 100, progress),
             top: lerpDouble(maxHeight - imgRadius * 2, minHeight / 2, progress),
             child: Text(
               user.name,
               overflow: TextOverflow.clip,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               textScaleFactor: lerpDouble(1, 0.65, progress),
             )),
+        //Image
         Positioned(
             left: lerpDouble(width / 2 - imgRadius, 20, progress),
             top: lerpDouble(maxHeight - imgRadius,
-                minHeight / 2 - imgRadius * 0.10, progress),
+                minHeight / 2 - imgRadius * 0.20, progress),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(user.photoUrl),
-              radius: lerpDouble(imgRadius, 20, progress),
+              radius: lerpDouble(imgRadius + 5, 24, progress),
+              backgroundColor:
+                  Color.lerp(Colors.deepOrange, Colors.purple, progress),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(user.photoUrl),
+                radius: lerpDouble(imgRadius, 20, progress),
+              ),
             )),
+        //Fab
         Positioned(
             left: width - 80,
             top: height - 80,
             child: AnimatedOpacity(
-              duration: Duration(milliseconds: 300),
-              opacity: lerpDouble(0.0, 1.0, progress)!,
+              duration: const Duration(milliseconds: 300),
+              opacity: (progress == 1) ? 1.0 : 0.0,
               child: Container(
                 width: 50,
                 height: 50,
-                decoration:
-                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-                child: Icon(
+                decoration: const BoxDecoration(
+                    color: Colors.blue, shape: BoxShape.circle),
+                child: const Icon(
                   Icons.add_a_photo,
                   size: 25,
                 ),
@@ -112,16 +122,13 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  // TODO: implement maxExtent
   double get maxExtent => maxHeight;
 
   @override
-  // TODO: implement minExtent
   double get minExtent => minHeight;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
-    throw UnimplementedError();
+    return true;
   }
 }
