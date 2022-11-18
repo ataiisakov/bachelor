@@ -51,8 +51,6 @@ class AvatarBackgroundView @JvmOverloads constructor(
         }
     }
 
-
-
     private fun drawPathBackground(canvas: Canvas) {
 
         path.apply {
@@ -88,5 +86,4 @@ class AvatarBackgroundView @JvmOverloads constructor(
         }
         canvas.drawPath(curveBgPath, curvedBgPaint)
     }
-
 }
