@@ -1,5 +1,5 @@
 # bachelor
-XML vs Compose
+XML vs Compose vs Flutter
 
 
 ## Directory structure
