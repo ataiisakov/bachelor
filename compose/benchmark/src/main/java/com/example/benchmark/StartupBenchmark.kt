@@ -1,7 +1,6 @@
 package com.example.benchmark
 
 import androidx.benchmark.macro.CompilationMode
-import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -27,15 +26,13 @@ class StartupBenchmark {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureRepeated(
+    fun startupComposeDefaultCompilation() = startup(CompilationMode.DEFAULT)
+
+    private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = PACKAGE_NAME,
         metrics = listOf(StartupTimingMetric()),
-        compilationMode = CompilationMode.None(),
         iterations = 5,
-        startupMode = StartupMode.COLD,
-        setupBlock = {
-            pressHome()
-        }
+        compilationMode = compilationMode
     ) {
         startActivityAndWait()
     }

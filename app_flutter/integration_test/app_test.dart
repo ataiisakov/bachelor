@@ -5,8 +5,7 @@ import 'package:integration_test/integration_test.dart';
 
 void main() {
   group('Testing App Performance Tests', () {
-    final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
-        as IntegrationTestWidgetsFlutterBinding;
+    final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
     binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
     testWidgets('Scrolling test', (tester) async {
