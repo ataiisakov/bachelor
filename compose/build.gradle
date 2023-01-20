@@ -51,6 +51,8 @@ android {
 
 dependencies {
     implementation project(":shared")
+    implementation "androidx.profileinstaller:profileinstaller:1.2.2"
+
 //  Start Compose Deps
     // To use constraintlayout in compose
     implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraintlayout"

@@ -12,6 +12,7 @@ fun MacrobenchmarkScope.waitForContent() {
 
 fun MacrobenchmarkScope.listScrollDownUp() {
     val list = device.findObject(By.res(packageName, RECYCLE_VIEW_RES_ID))
+    list.setGestureMargin(device.displayWidth / 5)
     list.fling(Direction.DOWN)
     device.waitForIdle()
     list.fling(Direction.UP)

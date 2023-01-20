@@ -9,6 +9,7 @@ void main() {
     await binding.watchPerformance(() async {
       await tester.pumpWidget(MyApp());
       await tester.pumpAndSettle();
+      await tester.pump(Duration(seconds: 2));
     }, reportKey: "startup_summary");
   });
 }

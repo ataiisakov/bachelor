@@ -2,6 +2,7 @@ package com.example.benchmark
 
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.FrameTimingMetric
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -34,12 +35,64 @@ class FrameTimingBenchmark {
             startActivityAndWait()
         }
     ) {
-        device.wait(Until.findObject(By.text("Header Text")), 5_000)
-        val column = device.findObject(By.res("lazyColumn"))
-        column.setGestureMargin(device.displayWidth / 5)
-        column.fling(Direction.DOWN)
-        device.waitForIdle()
-        column.fling(Direction.UP)
-
+        listScrollDownUp()
     }
+
+
+    @Test
+    fun interactionComposeApp() = appInteraction(CompilationMode.None())
+
+
+    private fun appInteraction(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
+        // [START_EXCLUDE]
+        packageName = PACKAGE_NAME,
+        metrics = listOf(FrameTimingMetric()),
+        // Try switching to different compilation modes to see the effect
+        // it has on frame timing metrics.
+        compilationMode = compilationMode,
+        startupMode = StartupMode.COLD, // restarts activity each iteration
+        iterations = ITERATIONS,
+        // [END_EXCLUDE]
+        setupBlock = {
+            pressHome()
+            startActivityAndWait()
+        }
+    ) {
+        listScrollDownUp()
+        goToDetail()
+        detailScrollDownUp()
+        pressBack()
+    }
+
+}
+
+fun MacrobenchmarkScope.waitForContent() {
+    device.wait(Until.hasObject(By.text("Header Text")), TEN_MILLIS)
+}
+
+fun MacrobenchmarkScope.listScrollDownUp() {
+    val column = device.findObject(By.res(LAZY_COLUMN_RES_ID))
+    column.setGestureMargin(device.displayWidth / 5)
+
+    column.fling(Direction.DOWN)
+    device.waitForIdle()
+    column.fling(Direction.UP)
+}
+
+fun MacrobenchmarkScope.goToDetail() {
+    val list = device.findObject(By.res(LAZY_COLUMN_RES_ID))
+    // Select first user from the list
+    list.children[1].click()
+    device.wait(Until.gone(By.res(LAZY_COLUMN_RES_ID)), TEN_MILLIS)
+}
+
+fun MacrobenchmarkScope.detailScrollDownUp() {
+    val detailScroll = device.findObject(By.res(DETAIL_SCROLL_CONTENT_RES_ID))
+    detailScroll.fling(Direction.DOWN, SPEED_PIXELS)
+    device.waitForIdle()
+    detailScroll.fling(Direction.UP, SPEED_PIXELS)
+}
+
+fun MacrobenchmarkScope.pressBack() {
+    device.pressBack()
 }

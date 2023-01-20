@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.benchmark'
+    namespace 'com.example.benchmark.compose'
     compileSdk 33
 
     compileOptions {

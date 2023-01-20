@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-private const val ITERATIONS = 1
+private const val ITERATIONS = 2
 
 
 @LargeTest
@@ -22,8 +22,22 @@ class FrameTimingBenchmark {
 
 
     @Test
-    fun scrollCompilationNone() = appInteraction(CompilationMode.None())
+    fun interactionApp() = appInteraction(CompilationMode.None())
 
+
+    @Test
+    fun scrollXmlList() = benchmarkRule.measureRepeated(
+        packageName = PACKAGE_NAME,
+        metrics = listOf(FrameTimingMetric()),
+        compilationMode = CompilationMode.None(),
+        startupMode = StartupMode.WARM,
+        iterations = ITERATIONS,
+        setupBlock = {
+            startActivityAndWait()
+        }
+    ) {
+        listScrollDownUp()
+    }
 
     private fun appInteraction(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         // [START_EXCLUDE]

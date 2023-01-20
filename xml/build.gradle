@@ -46,6 +46,7 @@ android {
 
 dependencies {
     implementation project(':shared')
+    implementation "androidx.profileinstaller:profileinstaller:1.2.2"
 
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview_version"
     implementation "androidx.metrics:metrics-performance:$jankstats_version"
