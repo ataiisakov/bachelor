@@ -7,9 +7,10 @@ void main() {
 
   testWidgets('startup test', (WidgetTester tester) async {
     await binding.watchPerformance(() async {
-      await tester.pumpWidget(MyApp());
+      await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
-      await tester.pump(Duration(seconds: 2));
+      final finder = find.text("Header");
+      expect(finder, findsOneWidget);
     }, reportKey: "startup_summary");
   });
 }
