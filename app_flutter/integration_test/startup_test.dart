@@ -1,15 +1,17 @@
 import 'package:app_flutter/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {
-  var binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
+      as IntegrationTestWidgetsFlutterBinding;
 
-  testWidgets('startup test', (WidgetTester tester) async {
-    await binding.watchPerformance(() async {
+  testWidgets('startup test', (tester) async {
+    await binding.traceAction(() async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
-      final finder = find.text("Header");
+      final finder = find.byKey(const Key("Header"));
       expect(finder, findsOneWidget);
     }, reportKey: "startup_summary");
   });

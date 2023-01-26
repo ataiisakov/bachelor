@@ -27,12 +27,13 @@ class _ListUser extends State<ListUser> {
   }
   Widget _buildList(){
     return ListView.builder(
+        key: const Key("listview"),
         itemCount: users.length,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return Column(
               children: [
-                _buildHeaderFooter("Header"),
+                _buildHeaderFooter("Header", const Key("Header")),
                 _buildListTile(context, index)
               ],
             );
@@ -41,7 +42,7 @@ class _ListUser extends State<ListUser> {
             return Column(
               children: [
                 _buildListTile(context, index),
-                _buildHeaderFooter("Footer")
+                _buildHeaderFooter("Footer", const Key("Footer"))
               ],
             );
           }
@@ -53,10 +54,11 @@ class _ListUser extends State<ListUser> {
     return UserTile(user: users.elementAt(index));
   }
 
-  Widget _buildHeaderFooter(String text) {
+  Widget _buildHeaderFooter(String text, Key? key) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
       child: Card(
+        key: key,
         child: ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
