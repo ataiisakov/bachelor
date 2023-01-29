@@ -4,7 +4,17 @@ import 'package:integration_test/integration_test_driver.dart';
 Future<void> main() {
   return integrationDriver(responseDataCallback: (data) async {
     if (data != null) {
-      final timeline = driver.Timeline.fromJson(data['scrolling_summary']);
+      var timeline;
+      var summaryTimeline;
+      for(var value in data.keys) {
+        if(value == 'scrolling_timeline') {
+          summaryTimeline = 'scrolling_timeline';
+          timeline = driver.Timeline.fromJson(data['scrolling_timeline']);
+        } else if(value == 'startup_timeline') {
+          summaryTimeline = 'startup_timeline';
+          timeline = driver.Timeline.fromJson(data['startup_timeline']);
+        }
+      }
 
       // Convert the Timeline into a TimelineSummary that's easier to
       // read and understand.
@@ -16,7 +26,7 @@ Future<void> main() {
       // Optionally, save the summary to disk by setting includeSummary
       // to true
       await summary.writeTimelineToFile(
-        'scrolling_summary',
+        summaryTimeline,
         pretty: true,
         includeSummary: true,
       );

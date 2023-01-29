@@ -4,8 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {
-  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
-      as IntegrationTestWidgetsFlutterBinding;
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Build our app and trigger a frame.
   testWidgets('Scroll Flutter test', (tester) async {
@@ -16,14 +15,14 @@ void main() {
     final footerFinder = find.byKey(const ValueKey('Footer'));
     final headerFinder = find.byKey(const ValueKey('Header'));
 
-    await tester.scrollUntilVisible(footerFinder, 100000);
-    await tester.scrollUntilVisible(headerFinder, -100000);
+    // await tester.scrollUntilVisible(footerFinder, 100000);
+    // await tester.scrollUntilVisible(headerFinder, -100000);
 
     await binding.traceAction(
       () async {
         // Scroll until the item to be found appears.
-        await tester.scrollUntilVisible(footerFinder, 100000);
-        await tester.scrollUntilVisible(headerFinder, -100000);
+        await tester.scrollUntilVisible(footerFinder, 500);
+        await tester.scrollUntilVisible(headerFinder, -500);
       },
       reportKey: 'scrolling_timeline',
     );
