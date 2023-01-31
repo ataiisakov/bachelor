@@ -21,8 +21,10 @@ void main() {
     await binding.traceAction(
       () async {
         // Scroll until the item to be found appears.
-        await tester.scrollUntilVisible(footerFinder, 500);
-        await tester.scrollUntilVisible(headerFinder, -500);
+        await tester.scrollUntilVisible(footerFinder, 500,
+            duration: const Duration(milliseconds: 500));
+        await tester.scrollUntilVisible(headerFinder, -500,
+            duration: const Duration(milliseconds: 500));
       },
       reportKey: 'scrolling_timeline',
     );

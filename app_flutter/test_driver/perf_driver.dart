@@ -6,11 +6,11 @@ Future<void> main() {
     if (data != null) {
       var timeline;
       var summaryTimeline;
-      for(var value in data.keys) {
-        if(value == 'scrolling_timeline') {
+      for(var key in data.keys) {
+        if(key == 'scrolling_timeline') {
           summaryTimeline = 'scrolling_timeline';
           timeline = driver.Timeline.fromJson(data['scrolling_timeline']);
-        } else if(value == 'startup_timeline') {
+        } else if(key == 'startup_timeline') {
           summaryTimeline = 'startup_timeline';
           timeline = driver.Timeline.fromJson(data['startup_timeline']);
         }
