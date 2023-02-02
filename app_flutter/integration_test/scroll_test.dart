@@ -6,27 +6,19 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  // Build our app and trigger a frame.
-  testWidgets('Scroll Flutter test', (tester) async {
+  testWidgets('Scrolling Flutter test', (tester) async {
     await tester.pumpWidget(const MyApp());
-    await tester.pumpAndSettle();
 
-    // final listFinder = find.byKey(const ValueKey('listview'));
-    final footerFinder = find.byKey(const ValueKey('Footer'));
-    final headerFinder = find.byKey(const ValueKey('Header'));
+    final listFinder = find.byKey(const ValueKey('listview'));
 
-    // await tester.scrollUntilVisible(footerFinder, 100000);
-    // await tester.scrollUntilVisible(headerFinder, -100000);
-
-    await binding.traceAction(
+    await binding.watchPerformance(
       () async {
-        // Scroll until the item to be found appears.
-        await tester.scrollUntilVisible(footerFinder, 500,
-            duration: const Duration(milliseconds: 500));
-        await tester.scrollUntilVisible(headerFinder, -500,
-            duration: const Duration(milliseconds: 500));
+        await tester.fling(listFinder, const Offset(0, -500), 10000);
+        await tester.pumpAndSettle();
+        await tester.fling(listFinder, const Offset(0, 500), 10000);
+        await tester.pumpAndSettle();
       },
-      reportKey: 'scrolling_timeline',
+      reportKey: 'scrolling_summary',
     );
   });
 }

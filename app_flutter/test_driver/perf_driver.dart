@@ -7,10 +7,11 @@ Future<void> main() {
       var timeline;
       var summaryTimeline;
       for(var key in data.keys) {
-        if(key == 'scrolling_timeline') {
+        /*if(key == 'scrolling_timeline') {
           summaryTimeline = 'scrolling_timeline';
           timeline = driver.Timeline.fromJson(data['scrolling_timeline']);
-        } else if(key == 'startup_timeline') {
+        } else */
+        if (key == 'startup_timeline') {
           summaryTimeline = 'startup_timeline';
           timeline = driver.Timeline.fromJson(data['startup_timeline']);
         }

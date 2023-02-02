@@ -7,10 +7,11 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('startup test', (tester) async {
-    await binding.watchPerformance(() async {
+    await binding.traceAction(() async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
       final finder = find.byKey(const Key("Header"));
+      await tester.pumpAndSettle();
       expect(finder, findsOneWidget);
     }, reportKey: "startup_timeline");
   });
