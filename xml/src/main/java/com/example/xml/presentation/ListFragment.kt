@@ -8,16 +8,17 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bachelor.model.User
+import com.example.bachelor.model.UserRepository
 import com.example.xml.adapter.FooterAdapter
 import com.example.xml.adapter.HeaderAdapter
 import com.example.xml.adapter.UsersAdapter
 import com.example.xml.adapter.onListItemClickListener
 import com.example.xml.databinding.ListFragmentBinding
-import com.example.bachelor.model.User
-import com.example.bachelor.model.UserRepository
 
-class ListFragment: Fragment() {
+class ListFragment : Fragment() {
     private val binding get() = _binding!!
     private var _binding: ListFragmentBinding? = null
 
@@ -61,17 +62,21 @@ class ListFragment: Fragment() {
     private fun setupAdapters() {
         val headerAdapter = HeaderAdapter()
         val footerAdapter = FooterAdapter()
-        val usersAdapter = UsersAdapter(listener = object : onListItemClickListener {
-            override fun invoke(user: User, view: View?) {
-                navigator().showDetails(user, view)
+        val usersAdapter = UsersAdapter(
+            UserRepository.users,
+            listener = object : onListItemClickListener {
+                override fun invoke(user: User) {
+                    navigator().showDetails(user)
+                }
             }
-        })
+        )
         val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter, footerAdapter)
         with(binding) {
-            recycleView.adapter = concatAdapter
+            recycleView.layoutManager = LinearLayoutManager(requireContext())
+            recycleView.setHasFixedSize(true)
             recycleView.addOnScrollListener(scrollListener)
+            recycleView.adapter = concatAdapter
         }
-        usersAdapter.submitList(UserRepository.users)
     }
 
     override fun onDestroyView() {

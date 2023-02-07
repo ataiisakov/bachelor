@@ -1,12 +1,7 @@
 package com.example.xml
 
 import android.os.Bundle
-import android.transition.Fade
-import android.transition.TransitionInflater
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.commit
@@ -65,39 +60,16 @@ class MainActivity : AppCompatActivity(), Navigator {
         _binding = null
     }
 
-    override fun showDetails(user: User, view: View?) {
-        view ?: return
-
+    override fun showDetails(user: User) {
         val detailFragment = DetailFragment.newInstance(user)
-        val homeFragment = supportFragmentManager.fragments.last()
-
-        detailFragment.sharedElementEnterTransition = TransitionInflater.from(this)
-            .inflateTransition(R.transition.default_transition)
-        detailFragment.sharedElementReturnTransition = TransitionInflater.from(this)
-            .inflateTransition(R.transition.default_transition)
-        detailFragment.enterTransition = Fade()
-
-        val photo = view.findViewById<ImageView>(R.id.iv)
-        val name = view.findViewById<TextView>(R.id.tv)
-
 
         supportFragmentManager
             .commit {
-                setReorderingAllowed(true)
-
-                addSharedElement(
-                    photo,
-                    String.format(
-                        resources.getString(R.string.shared_image_transition),
-                        user.id
-                    )
-                )
-                addSharedElement(
-                    name,
-                    String.format(
-                        resources.getString(R.string.shared_name_transition),
-                        user.id
-                    )
+                setCustomAnimations(
+                    R.anim.enter_right_to_left,
+                    R.anim.exit_right_to_left,
+                    R.anim.enter_left_to_right,
+                    R.anim.exit_left_to_right
                 )
                 replace(R.id.fragmentContainer, detailFragment)
                 addToBackStack(null)

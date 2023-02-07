@@ -3,8 +3,6 @@ package com.example.xml.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -12,11 +10,12 @@ import com.example.bachelor.model.User
 import com.example.xml.R
 import com.example.xml.databinding.ListItemBinding
 
-typealias onListItemClickListener = (User, View?) -> Unit
+typealias onListItemClickListener = (User) -> Unit
 
 class UsersAdapter(
+    private val users: List<User>,
     private val listener: onListItemClickListener
-) : ListAdapter<User, RecyclerView.ViewHolder>(UserDiffCallback), View.OnClickListener {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
 
     class UserViewHolder(
         private val binding: ListItemBinding
@@ -24,10 +23,6 @@ class UsersAdapter(
         fun bind(user: User) {
             with(binding) {
                 root.tag = user
-                iv.transitionName =
-                    root.resources.getString(R.string.shared_image_transition, user.id)
-                tv.transitionName =
-                    root.resources.getString(R.string.shared_name_transition, user.id)
 
                 iv.load(user.photoUrl) {
                     crossfade(true)
@@ -46,26 +41,17 @@ class UsersAdapter(
         return UserViewHolder(binding)
     }
 
+    override fun getItemCount() = users.size
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is UserViewHolder) {
-            val user = currentList[position]
+            val user = users[position]
             holder.bind(user)
         }
     }
 
     override fun onClick(v: View?) {
         val user = v?.tag as User
-        listener.invoke(user, v)
-    }
-
-    object UserDiffCallback : DiffUtil.ItemCallback<User>() {
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
-        }
-
+        listener.invoke(user)
     }
 }

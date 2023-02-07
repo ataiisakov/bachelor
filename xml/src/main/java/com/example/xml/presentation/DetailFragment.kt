@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.metrics.performance.PerformanceMetricsState
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.bachelor.model.User
 import com.example.xml.R
 import com.example.xml.databinding.DetailFragmentBinding
-import com.example.bachelor.model.User
 
 class DetailFragment: Fragment() {
     private val binding get() = _binding!!
@@ -49,10 +49,6 @@ class DetailFragment: Fragment() {
     private fun setUserDataViews(user: User) {
         userPhotoImageView = binding.root.findViewById(R.id.iv)
         userNameTextView   = binding.root.findViewById(R.id.tv)
-        userPhotoImageView.transitionName =
-            resources.getString(R.string.shared_image_transition, user.id)
-        userNameTextView.transitionName =
-            resources.getString(R.string.shared_name_transition, user.id)
         //          set user properties to views
         userNameTextView.text = user.name
         userPhotoImageView.load(user.photoUrl) {
