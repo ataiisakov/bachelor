@@ -34,13 +34,15 @@
         android:textStyle="bold"
         tools:text="Detail Viewaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
-    <ImageView
+    <com.example.xml.presentation.views.CustomImageView
         android:id="@+id/iv"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="@id/tv"
         app:layout_constraintStart_toStartOf="@id/tv"
         app:layout_constraintTop_toBottomOf="@id/iv"
+        android:src="@drawable/ic_round_account_circle_56"
         tools:src="@drawable/ic_round_account_circle_56" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
