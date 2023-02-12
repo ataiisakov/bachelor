@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math';
 
 import 'package:app_flutter/widgets/profile_background.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,26 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin{
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 2)
+    );
+    animation = Tween<double>(begin: 0.0, end: 2.0).animate(controller);
+    controller.forward(from: 0.0);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
             sliver: SliverPersistentHeader(
               pinned: true,
               delegate: _SliverAppBarDelegate(
-                  minHeight: 80.0, maxHeight: 200.0, user: widget.user),
+                  minHeight: 90.0, maxHeight: 200.0, user: widget.user, animation: animation),
             ),
             padding: const EdgeInsets.only(bottom: 70)),
         SliverList(
@@ -48,10 +68,12 @@ class _DetailScreenState extends State<DetailScreen> {
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(
-      {required this.minHeight, required this.maxHeight, required this.user});
+      {required this.minHeight, required this.maxHeight, required this.user,
+      required this.animation});
 
   final double minHeight;
   final double maxHeight;
+  final Animation<double> animation;
   final User user;
   double imgRadius = 50.0;
 
@@ -89,16 +111,61 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         Positioned(
             left: lerpDouble(width / 2 - imgRadius, 20, progress),
             top: lerpDouble(maxHeight - imgRadius,
-                minHeight / 2 - imgRadius * 0.20, progress),
-            child: CircleAvatar(
-              radius: lerpDouble(imgRadius + 5, 24, progress),
-              backgroundColor:
-                  Color.lerp(Colors.deepOrange, Colors.purple, progress),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(user.photoUrl),
-                radius: lerpDouble(imgRadius, 20, progress),
-              ),
-            )),
+                minHeight / 2 - imgRadius * 0.40, progress),
+            child: Stack(
+              children: [
+                /*Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.blue.shade800, Colors.red.shade800]
+                      ),
+                    ),
+                )*/
+                Container(
+                  child: CustomPaint(
+                    painter: CircleBackground(radius: imgRadius),
+                  ),
+                ),
+                Container(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(user.photoUrl),
+                    radius: lerpDouble(imgRadius, 20, progress),
+                  ),
+                ),
+              ],
+            ),
+            // child: RotationTransition(
+            //   turns: animation,
+            //   child: Stack(
+            //     children: [
+            //
+            //     ],
+            //   ),
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         shape: BoxShape.circle,
+            //         gradient: LinearGradient(
+            //             begin: Alignment.topLeft,
+            //             end: Alignment.bottomRight,
+            //             colors: [Colors.blue.shade800, Colors.red.shade800]
+            //         ),
+            //         // image: DecorationImage(image: NetworkImage(user.photoUrl))
+            //       ),
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(8),
+            //         child: CircleAvatar(
+            //           backgroundImage: NetworkImage(user.photoUrl),
+            //           radius: lerpDouble(imgRadius, 20, progress),
+            //         ),
+            //       ),
+            //     ),
+            //
+            // ),
+
+        ),
         //Fab
         Positioned(
             left: width - 80,
@@ -131,4 +198,30 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
+}
+
+class CircleBackground extends CustomPainter {
+  CircleBackground({required this.radius});
+
+  final double radius;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // TODO: implement paint
+    var linearGradient = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Colors.blue.shade800, Colors.red.shade800]
+    );
+    var paint = Paint()
+      ..shader = linearGradient.createShader(Offset.zero & size);
+    var center = size;
+    canvas.drawCircle(Offset(size.width, size.height), radius, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+
 }
