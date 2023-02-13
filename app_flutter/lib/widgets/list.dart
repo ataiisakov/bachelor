@@ -57,12 +57,14 @@ class _ListUser extends State<ListUser> {
   Widget _buildHeaderFooter(String text, Key? key) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
-      child: Card(
-        key: key,
-        child: ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          title: Text(text),
+      child: Padding(
+        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+        child: Container(
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 30),
+          ),
         ),
       ),
     );
@@ -81,13 +83,15 @@ class UserTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
       child: Card(
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             title: Text(user.name),
             onTap: () {
               Navigator.of(context)
                   .push(_createRoute(DetailScreen(user: user)));
             },
             leading: CircleAvatar(
+              radius: 35,
               backgroundImage: NetworkImage(user.photoUrl),
             ),
           ),

@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math';
 
 import 'package:app_flutter/widgets/profile_background.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +15,16 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin{
+class _DetailScreenState extends State<DetailScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-        vsync: this,
-        duration: const Duration(seconds: 2)
-    );
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     animation = Tween<double>(begin: 0.0, end: 2.0).animate(controller);
     controller.forward(from: 0.0);
   }
@@ -45,7 +43,10 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
             sliver: SliverPersistentHeader(
               pinned: true,
               delegate: _SliverAppBarDelegate(
-                  minHeight: 90.0, maxHeight: 200.0, user: widget.user, animation: animation),
+                  minHeight: 90.0,
+                  maxHeight: 200.0,
+                  user: widget.user,
+                  animation: animation),
             ),
             padding: const EdgeInsets.only(bottom: 70)),
         SliverList(
@@ -68,7 +69,9 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(
-      {required this.minHeight, required this.maxHeight, required this.user,
+      {required this.minHeight,
+      required this.maxHeight,
+      required this.user,
       required this.animation});
 
   final double minHeight;
@@ -109,62 +112,32 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             )),
         //Image
         Positioned(
-            left: lerpDouble(width / 2 - imgRadius, 20, progress),
-            top: lerpDouble(maxHeight - imgRadius,
-                minHeight / 2 - imgRadius * 0.40, progress),
-            child: Stack(
-              children: [
-                /*Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Colors.blue.shade800, Colors.red.shade800]
-                      ),
+          left: lerpDouble(width / 2 - imgRadius, 20, progress),
+          top: lerpDouble(maxHeight - imgRadius,
+              minHeight / 2 - imgRadius * 0.20, progress),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              RotationTransition(
+                turns: animation,
+                child: FittedBox(
+                  child: SizedBox(
+                    width: lerpDouble(imgRadius * 2, 20, progress),
+                    height: lerpDouble(imgRadius * 2, 20, progress),
+                    child: CustomPaint(
+                      painter: CircleBackground(
+                          radius:
+                              lerpDouble(imgRadius + 10, 20 + 8, progress)!),
                     ),
-                )*/
-                Container(
-                  child: CustomPaint(
-                    painter: CircleBackground(radius: imgRadius),
                   ),
                 ),
-                Container(
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(user.photoUrl),
-                    radius: lerpDouble(imgRadius, 20, progress),
-                  ),
-                ),
-              ],
-            ),
-            // child: RotationTransition(
-            //   turns: animation,
-            //   child: Stack(
-            //     children: [
-            //
-            //     ],
-            //   ),
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         shape: BoxShape.circle,
-            //         gradient: LinearGradient(
-            //             begin: Alignment.topLeft,
-            //             end: Alignment.bottomRight,
-            //             colors: [Colors.blue.shade800, Colors.red.shade800]
-            //         ),
-            //         // image: DecorationImage(image: NetworkImage(user.photoUrl))
-            //       ),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8),
-            //         child: CircleAvatar(
-            //           backgroundImage: NetworkImage(user.photoUrl),
-            //           radius: lerpDouble(imgRadius, 20, progress),
-            //         ),
-            //       ),
-            //     ),
-            //
-            // ),
-
+              ),
+              CircleAvatar(
+                backgroundImage: NetworkImage(user.photoUrl),
+                radius: lerpDouble(imgRadius, 20, progress),
+              ),
+            ],
+          ),
         ),
         //Fab
         Positioned(
@@ -207,21 +180,25 @@ class CircleBackground extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO: implement paint
     var linearGradient = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [Colors.blue.shade800, Colors.red.shade800]
-    );
+        colors: [Colors.blue.shade800, Colors.red.shade800]);
+
+    var centerX = size.width / 2;
+    var centerY = size.height / 2;
+    var offset = Offset(centerX, centerY);
+
     var paint = Paint()
-      ..shader = linearGradient.createShader(Offset.zero & size);
-    var center = size;
-    canvas.drawCircle(Offset(size.width, size.height), radius, paint);
+      ..isAntiAlias = true
+      ..shader = linearGradient
+          .createShader(Rect.fromCircle(center: offset, radius: radius));
+
+    canvas.drawCircle(offset, radius, paint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
-
 }
