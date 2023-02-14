@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.metrics.performance.PerformanceMetricsState
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bachelor.model.User
 import com.example.bachelor.model.UserRepository
-import com.example.xml.adapter.FooterAdapter
-import com.example.xml.adapter.HeaderAdapter
 import com.example.xml.adapter.UsersAdapter
 import com.example.xml.adapter.onListItemClickListener
 import com.example.xml.databinding.ListFragmentBinding
@@ -54,14 +51,12 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(view)
-        setupAdapters()
+        setupAdapter()
         postponeEnterTransition()
         binding.recycleView.doOnPreDraw { startPostponedEnterTransition() }
     }
 
-    private fun setupAdapters() {
-        val headerAdapter = HeaderAdapter()
-        val footerAdapter = FooterAdapter()
+    private fun setupAdapter() {
         val usersAdapter = UsersAdapter(
             UserRepository.users,
             listener = object : onListItemClickListener {
@@ -70,12 +65,11 @@ class ListFragment : Fragment() {
                 }
             }
         )
-        val concatAdapter = ConcatAdapter(headerAdapter, usersAdapter, footerAdapter)
         with(binding) {
             recycleView.layoutManager = LinearLayoutManager(requireContext())
             recycleView.setHasFixedSize(true)
             recycleView.addOnScrollListener(scrollListener)
-            recycleView.adapter = concatAdapter
+            recycleView.adapter = usersAdapter
         }
     }
 
