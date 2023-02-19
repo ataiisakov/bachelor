@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:app_flutter/widgets/profile_background.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
 
 import '../model/user_model.dart';
@@ -19,14 +20,31 @@ class _DetailScreenState extends State<DetailScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
+  late ScrollController scrollController;
+  bool fabIsVisible = false;
+  String longText = lorem(paragraphs: 4, words: 500);
 
   @override
   void initState() {
-    super.initState();
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     animation = Tween<double>(begin: 0.0, end: 2.0).animate(controller);
     controller.forward(from: 0.0);
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+        if (scrollController.offset <=
+            scrollController.position.minScrollExtent &&
+            !scrollController.position.outOfRange) {
+          setState(() {
+            fabIsVisible = false;
+          });
+        } else {
+          setState(() {
+            fabIsVisible = true;
+          });
+        }
+    });
+    super.initState();
   }
 
   @override
@@ -38,9 +56,9 @@ class _DetailScreenState extends State<DetailScreen>
   @override
   Widget build(BuildContext context) {
     Widget profile = CustomScrollView(
+      controller: scrollController,
       slivers: [
-        SliverPadding(
-            sliver: SliverPersistentHeader(
+        SliverPadding(sliver: SliverPersistentHeader(
               pinned: true,
               delegate: _SliverAppBarDelegate(
                   minHeight: 90.0,
@@ -48,22 +66,45 @@ class _DetailScreenState extends State<DetailScreen>
                   user: widget.user,
                   animation: animation),
             ),
-            padding: const EdgeInsets.only(bottom: 70)),
-        SliverList(
-            delegate: SliverChildListDelegate([
+            padding: const EdgeInsets.only(bottom: 70)
+        ),
+        SliverList(delegate: SliverChildListDelegate([
           Container(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 100),
-            child: Text(lorem(paragraphs: 4, words: 500)),
-          ),
-        ]))
+            child:  Text(longText),
+          )])
+        )
       ],
     );
 
     return Scaffold(
         body: Container(
-            width: window.physicalSize.width,
             alignment: Alignment.center,
-            child: profile));
+              child: Stack(children: [
+                profile,
+                //Fab
+                Positioned(
+                    right: 30,
+                    bottom: 30,
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 500),
+                      opacity: fabIsVisible ? 1.0 : 0.0,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                            color: Colors.blue, shape: BoxShape.circle),
+                        child: IconButton(
+                          icon: const Icon(Icons.add_a_photo),
+                          iconSize: 25,
+                          onPressed: (){ Navigator.of(context).pop(); },
+                        ),
+                      ),
+                    )
+                ),
+              ]),
+            )
+    );
   }
 }
 
@@ -79,6 +120,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Animation<double> animation;
   final User user;
   double imgRadius = 50.0;
+
+  @override
+  double get maxExtent => maxHeight;
 
   @override
   Widget build(
@@ -101,9 +145,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         ),
         //User Name
         Positioned(
-            left:
-                lerpDouble((width / 2.0) - (imgRadius), width - 100, progress),
-            top: lerpDouble(maxHeight - imgRadius * 2, minHeight / 2, progress),
+            right: lerpDouble(width * .5 - imgRadius, 30, progress),
+            top: lerpDouble(maxHeight - imgRadius * 2, minHeight * .5, progress),
             child: Text(
               user.name,
               overflow: TextOverflow.clip,
@@ -139,30 +182,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             ],
           ),
         ),
-        //Fab
-        Positioned(
-            left: width - 80,
-            top: height - 80,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: (progress == 1) ? 1.0 : 0.0,
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
-                child: const Icon(
-                  Icons.add_a_photo,
-                  size: 25,
-                ),
-              ),
-            )),
+
       ],
     );
   }
-
-  @override
-  double get maxExtent => maxHeight;
 
   @override
   double get minExtent => minHeight;

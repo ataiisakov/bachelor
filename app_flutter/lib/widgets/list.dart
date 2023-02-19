@@ -31,27 +31,18 @@ class _ListUser extends State<ListUser> {
         itemCount: users.length,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return Column(
-              children: [
-                _buildHeaderFooter("Header", const Key("Header")),
-                _buildListTile(context, index)
-              ],
+            return Row(
+              children: [_buildHeaderFooter("Header", const Key("Header"))]
             );
           }
           if (index == users.length - 1) {
-            return Column(
-              children: [
-                _buildListTile(context, index),
-                _buildHeaderFooter("Footer", const Key("Footer"))
-              ],
+            return Row(
+              children: [_buildHeaderFooter("Footer", const Key("Footer"))],
             );
           }
-          return _buildListTile(context, index);
-        });
-  }
-
-  Widget _buildListTile(BuildContext context, int index) {
-    return UserTile(user: users.elementAt(index));
+          return UserTile(user: users.elementAt(index));
+        }
+    );
   }
 
   Widget _buildHeaderFooter(String text, Key? key) {
