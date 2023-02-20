@@ -6,14 +6,31 @@ Future<void> main() {
     if (data != null) {
       var timeline;
       var summaryTimeline;
-      for(var key in data.keys) {
-        /*if(key == 'scrolling_timeline') {
-          summaryTimeline = 'scrolling_timeline';
-          timeline = driver.Timeline.fromJson(data['scrolling_timeline']);
-        } else */
-        if (key == 'startup_timeline') {
-          summaryTimeline = 'startup_timeline';
-          timeline = driver.Timeline.fromJson(data['startup_timeline']);
+
+      const startupTimelineKey = 'startup_timeline';
+      const scrollingTimelineKey = 'scrolling_timeline';
+      const appInteractionTimelineKey = 'app_inter_timeline';
+      for (var key in data.keys) {
+        switch (key) {
+          case startupTimelineKey:
+            {
+              summaryTimeline = startupTimelineKey;
+              timeline = driver.Timeline.fromJson(data[startupTimelineKey]);
+              break;
+            }
+          case scrollingTimelineKey:
+            {
+              summaryTimeline = scrollingTimelineKey;
+              timeline = driver.Timeline.fromJson(data[scrollingTimelineKey]);
+              break;
+            }
+          case appInteractionTimelineKey:
+            {
+              summaryTimeline = appInteractionTimelineKey;
+              timeline =
+                  driver.Timeline.fromJson(data[appInteractionTimelineKey]);
+              break;
+            }
         }
       }
 

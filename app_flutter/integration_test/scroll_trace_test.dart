@@ -11,11 +11,11 @@ void main() {
 
     final listFinder = find.byKey(const ValueKey('listview'));
 
-    await binding.watchPerformance(() async {
+    await binding.traceAction(() async {
       await tester.fling(listFinder, const Offset(0, -10000), 10000);
       await tester.pumpAndSettle();
       await tester.fling(listFinder, const Offset(0, 10000), 10000);
       await tester.pumpAndSettle();
-    }, reportKey: 'scrolling_performance');
+    }, reportKey: 'scrolling_timeline');
   });
 }

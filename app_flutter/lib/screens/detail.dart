@@ -56,9 +56,11 @@ class _DetailScreenState extends State<DetailScreen>
   @override
   Widget build(BuildContext context) {
     Widget profile = CustomScrollView(
+      key: const Key("scrollview"),
       controller: scrollController,
       slivers: [
-        SliverPadding(sliver: SliverPersistentHeader(
+        SliverPadding(
+            sliver: SliverPersistentHeader(
               pinned: true,
               delegate: _SliverAppBarDelegate(
                   minHeight: 90.0,
@@ -95,10 +97,13 @@ class _DetailScreenState extends State<DetailScreen>
                         decoration: const BoxDecoration(
                             color: Colors.blue, shape: BoxShape.circle),
                         child: IconButton(
-                          icon: const Icon(Icons.add_a_photo),
-                          iconSize: 25,
-                          onPressed: (){ Navigator.of(context).pop(); },
-                        ),
+                          key: const Key("iconButton"),
+                  icon: const Icon(Icons.add_a_photo),
+                  iconSize: 25,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
                       ),
                     )
                 ),

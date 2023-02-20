@@ -6,10 +6,10 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('startup test', (tester) async {
-    await binding.watchPerformance(() async {
+    await binding.traceAction(() async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
       expect(find.text("Header"), findsOneWidget);
-    }, reportKey: "startup_performance");
+    }, reportKey: "startup_timeline");
   });
 }

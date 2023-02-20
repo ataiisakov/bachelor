@@ -40,7 +40,8 @@ class _ListUser extends State<ListUser> {
               children: [_buildHeaderFooter("Footer", const Key("Footer"))],
             );
           }
-          return UserTile(user: users.elementAt(index));
+          return UserTile(
+              key: Key("user_$index"), user: users.elementAt(index));
         }
     );
   }
@@ -64,7 +65,7 @@ class _ListUser extends State<ListUser> {
 
 // List Item
 class UserTile extends StatelessWidget {
-  UserTile({required this.user}) : super(key: ObjectKey(user));
+  const UserTile({required Key key, required this.user}) : super(key: key);
 
   final User user;
 
