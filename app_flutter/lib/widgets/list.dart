@@ -28,14 +28,14 @@ class _ListUser extends State<ListUser> {
   Widget _buildList(){
     return ListView.builder(
         key: const Key("listview"),
-        itemCount: users.length,
+        itemCount: users.length + 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return Row(
-              children: [_buildHeaderFooter("Header", const Key("Header"))]
-            );
+                children: [_buildHeaderFooter("Header", const Key("Header"))]);
           }
-          if (index == users.length - 1) {
+          index -= 1;
+          if (index == users.length) {
             return Row(
               children: [_buildHeaderFooter("Footer", const Key("Footer"))],
             );
@@ -77,7 +77,7 @@ class UserTile extends StatelessWidget {
           child: ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-            title: Text(user.name),
+            title: Text("${user.name} ${user.id}"),
             onTap: () {
               Navigator.of(context)
                   .push(_createRoute(DetailScreen(user: user)));
