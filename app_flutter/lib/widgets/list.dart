@@ -4,28 +4,17 @@ import 'package:flutter/material.dart';
 
 import '../model/user_model.dart';
 
-class ListUser extends StatefulWidget {
-  const ListUser({super.key});
+class ListUser extends StatelessWidget {
+  final List<User> users;
 
-  @override
-  State<StatefulWidget> createState() => _ListUser();
-}
-
-// List
-class _ListUser extends State<ListUser> {
-  late List<User> users;
-
-  @override
-  void initState() {
-    users = Repository.instance.userList;
-    super.initState();
-  }
+  ListUser({super.key, required this.users});
 
   @override
   Widget build(BuildContext context) {
     return _buildList();
   }
-  Widget _buildList(){
+
+  Widget _buildList() {
     return ListView.builder(
         key: const Key("listview"),
         itemCount: users.length + 2,

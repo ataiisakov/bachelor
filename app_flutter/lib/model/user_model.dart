@@ -13,7 +13,7 @@ class User {
 
 // Repository to get users
 class Repository {
-  late List<User> userList;
+  List<User> userList = [];
 
   final _faker = Faker.instance;
   final Random _random = Random();
@@ -23,11 +23,11 @@ class Repository {
   static Repository get instance => _instance;
 
   Repository._privateConstructor() {
-    userList = List.generate(
+    userList.addAll(List.generate(
         100,
         (index) => User(index + 1, _faker.name.firstName(),
             _userPhotos[_random.nextInt(_userPhotos.length)]),
-        growable: false);
+        growable: false));
   }
 
   // photos for users

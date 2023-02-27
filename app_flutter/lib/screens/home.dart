@@ -1,3 +1,4 @@
+import 'package:app_flutter/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/list.dart';
@@ -7,6 +8,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListUser();
+    return ListUser(
+      users: Repository.instance.userList,
+    );
   }
 }
