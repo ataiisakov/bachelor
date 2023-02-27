@@ -254,15 +254,15 @@ fun HeaderMotion(user: User, modifier: Modifier = Modifier, progress: Float, sma
 
 @Composable
 fun UserProfilePhoto(modifier: Modifier = Modifier, photoUrl: String) {
-    val rotationAnim = remember { Animatable(0f) }
     val borderWidth = with(LocalDensity.current) { 8.dp.toPx() }
     val scope = rememberCoroutineScope()
+    val rotationAnim = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
         scope.launch {
             rotationAnim.animateTo(
                 targetValue = 720f,
                 animationSpec = tween(
-                    2000,
+                    2500,
                     easing = LinearEasing
                 )
             )
@@ -345,7 +345,7 @@ fun ProfilePicAnim(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = Unit) {
         scope.launch {
-            animate(0f, 360f, animationSpec = tween(2000)) { value, _ ->
+            animate(0f, 720f, animationSpec = tween(2500)) { value, _ ->
                 angle = value
             }
         }

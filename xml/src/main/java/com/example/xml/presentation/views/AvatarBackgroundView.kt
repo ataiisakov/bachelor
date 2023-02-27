@@ -10,23 +10,10 @@ import com.example.xml.utils.toDp
 class AvatarBackgroundView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-
-
     private val bgBoundsRectF = RectF()
     private val path = Path()
     private val curveBgPath = Path()
     private val handlePoint = PointF()
-
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        bgBoundsRectF.apply {
-            this.left = this@AvatarBackgroundView.left.toFloat()
-            this.right = this@AvatarBackgroundView.right.toFloat()
-            this.top = this@AvatarBackgroundView.top.toFloat()
-            this.bottom = this@AvatarBackgroundView.bottom.toFloat()
-        }
-    }
 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
@@ -40,13 +27,23 @@ class AvatarBackgroundView @JvmOverloads constructor(
         color = resources.getColor(R.color.dark_blue_bg_profile)
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        bgBoundsRectF.apply {
+            this.left = this@AvatarBackgroundView.left.toFloat()
+            this.right = this@AvatarBackgroundView.right.toFloat()
+            this.top = this@AvatarBackgroundView.top.toFloat()
+            this.bottom = this@AvatarBackgroundView.bottom.toFloat()
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val hDp = height.toDp()
 
         drawPathBackground(canvas)
 //        draw only if height is more than 100 dp
-        if(hDp > 100){
+        if (hDp > 100) {
             drawCurvedPathBackground(canvas)
         }
     }
