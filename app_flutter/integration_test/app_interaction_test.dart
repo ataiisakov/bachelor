@@ -15,14 +15,14 @@ void main() {
       final listFinder = find.byType(Scrollable);
       //down
       await tester.fling(listFinder, const Offset(0, -10000), 10000);
-      await tester.pumpAndSettle();
+      expect(find.text("Footer"), findsOneWidget);
       //up
       await tester.fling(listFinder, const Offset(0, 10000), 10000);
-      await tester.pumpAndSettle();
+      expect(find.text("Header"), findsOneWidget);
       // go to detail
       final userFirst = find.byKey(const ValueKey("user_1"));
       await tester.tap(userFirst);
-      await tester.pumpAndSettle();
+      await tester.pump();
       // scroll detail
       final scrollView = find.byKey(const ValueKey('scrollview'));
       // down
@@ -34,7 +34,7 @@ void main() {
       // go back
       final iconButton = find.byKey(const ValueKey("iconButton"));
       await tester.tap(iconButton);
-      await tester.pumpAndSettle();
+      await tester.pump();
     }, reportKey: 'app_interaction_performance');
   });
 }

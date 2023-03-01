@@ -8,7 +8,7 @@ void main() {
   testWidgets('startup test', (tester) async {
     await binding.watchPerformance(() async {
       await tester.pumpWidget(const MyApp());
-      await tester.pumpAndSettle();
+      await tester.pump();
       expect(find.text("Header"), findsOneWidget);
     }, reportKey: "startup_performance");
   });

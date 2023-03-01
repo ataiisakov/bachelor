@@ -13,9 +13,11 @@ void main() {
 
     await binding.traceAction(() async {
       await tester.fling(listFinder, const Offset(0, -10000), 10000);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      expect(find.text("Footer"), findsOneWidget);
       await tester.fling(listFinder, const Offset(0, 10000), 10000);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      expect(find.text("Header"), findsOneWidget);
     }, reportKey: 'scrolling_timeline');
   });
 }
