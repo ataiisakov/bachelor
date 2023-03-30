@@ -116,7 +116,7 @@ fun UserListItem(user: User, onUserClick: (User) -> Unit) {
                 modifier = Modifier
                     .size(56.dp)
             )
-            Text(modifier = Modifier.padding(horizontal = 8.dp), text = user.name)
+            Text(modifier = Modifier.padding(horizontal = 8.dp), text = user.id.toString())
         }
     }
 }

@@ -13,9 +13,9 @@ void main() {
 
     await binding.watchPerformance(() async {
       await tester.fling(listFinder, const Offset(0, -10000), 10000);
-      expect(find.text("Footer"), findsOneWidget);
+      expect(find.text("Footer Text"), findsOneWidget);
       await tester.fling(listFinder, const Offset(0, 10000), 10000);
-      expect(find.text("Header"), findsOneWidget);
+      expect(find.text("Header Text"), findsOneWidget);
     }, reportKey: 'scrolling_performance');
   });
 }

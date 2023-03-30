@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-private const val ITERATIONS = 2
+private const val ITERATIONS = 5
 
 
 @LargeTest
@@ -29,7 +29,7 @@ class FrameTimingBenchmark {
     fun scrollXmlList() = benchmarkRule.measureRepeated(
         packageName = PACKAGE_NAME,
         metrics = listOf(FrameTimingMetric()),
-        compilationMode = CompilationMode.None(),
+        compilationMode = CompilationMode.DEFAULT,
         startupMode = StartupMode.WARM,
         iterations = ITERATIONS,
         setupBlock = {

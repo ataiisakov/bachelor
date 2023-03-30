@@ -1,5 +1,7 @@
 package com.example.benchmark
 
+import androidx.benchmark.macro.CompilationMode
+import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,11 +27,19 @@ class StartupBenchmark {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startupXml() = startup()
+    fun startupXmlCold() = startup(StartupMode.COLD)
 
-    private fun startup() = benchmarkRule.measureRepeated(
+    @Test
+    fun startupXmlWarm() = startup(StartupMode.WARM)
+
+    @Test
+    fun startupXmlHot() = startup(StartupMode.HOT)
+
+    private fun startup(startupMode: StartupMode) = benchmarkRule.measureRepeated(
         packageName = PACKAGE_NAME,
         metrics = listOf(StartupTimingMetric()),
+        compilationMode = CompilationMode.DEFAULT,
+        startupMode = startupMode,
         iterations = 5,
         setupBlock = {
             pressHome()

@@ -37,7 +37,7 @@ class UsersAdapter(
                     transformations(CircleCropTransformation())
                     placeholder(R.drawable.ic_round_account_circle_56)
                 }
-                tv.text = user.name
+                tv.text = user.id.toString()
             }
         }
     }

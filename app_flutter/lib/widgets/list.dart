@@ -20,13 +20,16 @@ class ListUser extends StatelessWidget {
         itemCount: users.length + 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return Row(
-                children: [_buildHeaderFooter("Header", const Key("Header"))]);
+            return Row(children: [
+              _buildHeaderFooter("Header Text", const Key("Header"))
+            ]);
           }
           index -= 1;
           if (index == users.length) {
             return Row(
-              children: [_buildHeaderFooter("Footer", const Key("Footer"))],
+              children: [
+                _buildHeaderFooter("Footer Text", const Key("Footer"))
+              ],
             );
           }
           return UserTile(
@@ -66,7 +69,7 @@ class UserTile extends StatelessWidget {
           child: ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-            title: Text("${user.name} ${user.id}"),
+            title: Text("${user.id}"),
             onTap: () {
               Navigator.of(context)
                   .push(_createRoute(DetailScreen(user: user)));
