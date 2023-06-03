@@ -84,6 +84,8 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 
 ### App Frame timing
 
+**the values are presented in milliseconds.**
+
 | Percentile | XML | Jetpack-Compose | Flutter |
 |:-----------|:----|:---------------:|--------:|
 | p50        | 5.2 |       7.6       |     5.2 |
@@ -95,6 +97,8 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 
 ### App Size
 
+**the values are presented in megabytes.**
+
 
 | Flutter |  Jetpack-Compose  | XML    |
 |---------|:-----------------:|--------|
@@ -103,6 +107,8 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 `./tests/app_size`
 
 ### App Startup Time
+
+**the values are presented in milliseconds.**
 
 |        | XML   | Jetpack-Compose | Flutter |
 |:-------|:------|:---------------:|--------:|
