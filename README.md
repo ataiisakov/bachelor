@@ -36,35 +36,35 @@ All tests were performed on a physical device.
 #### App Frame timing
 The scroll tests were run five times and the results are based on the data from the five tests.
 
-Macrobenchmark tests were written for XML & Jetpack-Compose to obtain frame timing data while scrolling the list: `./compose/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt`,
-`./xml/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt`
+Macrobenchmark tests were written for XML & Jetpack-Compose to obtain frame timing data while scrolling the list: 
+* [Frame Timing Jetpack-Compose](./compose/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt),
+* [Frame Timing XML](./xml/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt)
 
-The integration test was written for Flutter:
-`./app_flutter/integration_test/scroll_trace_test.dart`
-After running the test for Flutter, a file with various performance data in JSON `./tests/list_scroll/flutter`
-format was obtained and the value of `frame_rasterizer_times` was taken for the tests. Then using a Python script `./tests/percentile_script/script.py`
-the average frame timing in each percentile [50,90,95,99] was obtained `./tests/percentile_script/results_from_script`.
+The [integration test](./app_flutter/integration_test/scroll_trace_test.dart) was written for Flutter.
+After running the test for Flutter, a file with various performance data in [JSON](./tests/list_scroll/flutter)
+format was obtained and the value of `frame_rasterizer_times` was taken for the tests. Then using a [Python script](./tests/percentile_script/script.py)
+[the average frame timing](./tests/percentile_script/results_from_script) in each percentile [50,90,95,99] was obtained.
 
 #### App startup Time
 Tests to obtain application startup time data were performed five times.
 
 Macrobenchmark tests were written to obtain the startup time for XML & Jetpack-Compose app:
-`./compose/benchmark/src/main/java/com/example/benchmark/StartupBenchmark.kt`,
-`./xml/benchmark/src/main/java/com/example/benchmark/StartupBenchmark.kt`.
+* [Startup Jetpack-Compose](./compose/benchmark/src/main/java/com/example/benchmark/StartupBenchmark.kt)
+* [Startup XML](./xml/benchmark/src/main/java/com/example/benchmark/StartupBenchmark.kt)
+
 The cold startup type was taken for comparison.
 
 The startup time of the Flutter application was obtained using a command in the terminal:
 <pre>
 flutter run --trace-startup --profile
 </pre>
-This command is necessary to obtain the startup time of the app
-[Measuring app startup time](https://docs.flutter.dev/testing/debugging#measuring-app-startup-time).
-An JSON `tests/app_startup_iter_5/flutter_startup_5_iter` file was obtained and the value `timeToFirstFrameRasterizedMicros` was taken. The tests were run five times and obtained
+This command is necessary to [measuare](https://docs.flutter.dev/testing/debugging#measuring-app-startup-time) the startup time of the app.
+An [JSON](tests/app_startup_iter_5/flutter_startup_5_iter) file was obtained and the value `timeToFirstFrameRasterizedMicros` was taken. The tests were run five times and obtained
 maximum, minimum and median startup times for the app.
 
 #### Benchmark app using a Flashlight
 
-The `./tests/app_interaction_script` was written and the tests were run ten times on a physical device.
+The [Script](./tests/app_interaction_script) was written and the tests were run ten times on a physical device.
 Using the `Flashlight` library, application performance data, average FPS, CPU, RAM and an overall score on a scale of 100 were obtained.
 
 * [Marcobenchmarks](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview)
@@ -93,7 +93,7 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 | p95        | 7.0 |      14.8       |     8.6 |
 | p99        | 7.7 |      23.3       |   48.18 |
 
-`./tests/list_scroll`
+[Result](./tests/list_scroll)
 
 ### App Size
 
@@ -104,7 +104,7 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 |---------|:-----------------:|--------|
 | 13 Mb   |      12.7 Mb      | 5.5 Mb |
 
-`./tests/app_size`
+[Result](./tests/app_size)
 
 ### App Startup Time
 
@@ -116,7 +116,7 @@ Using the `Flashlight` library, application performance data, average FPS, CPU, 
 | median | 707.5 |      591.1      |   395.9 |
 | max    | 729.1 |      620.2      |   502.6 |
 
-`./tests/app_startup_iter_5`
+[Result](./tests/app_startup_iter_5)
 
 
 
