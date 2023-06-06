@@ -43,7 +43,7 @@ Macrobenchmark tests were written for XML & Jetpack-Compose to obtain frame timi
 The [integration test](./app_flutter/integration_test/scroll_trace_test.dart) was written for Flutter.
 After running the test for Flutter, a file with various performance data in [JSON](./tests/list_scroll/flutter)
 format was obtained and the value of `frame_rasterizer_times` was taken for the tests. Then using a [Python script](./tests/percentile_script/script.py)
-[the average frame timing](./tests/percentile_script/results_from_script) in each percentile [50,90,95,99] was obtained.
+the average frame timing in each percentile [50,90,95,99] was [obtained](./tests/percentile_script/results_from_script.png).
 
 #### App startup Time
 Tests to obtain application startup time data were performed five times.
