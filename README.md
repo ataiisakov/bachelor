@@ -6,8 +6,8 @@
 
 ## App
 
-The application contains a list of 100 statically created objects, when clicking on an item in the list, there is an animated transition to the detailed screen.
-When entering the detail screen, the picture frame rotates for two seconds. If the user scrolls the text, the photo and the text
+The application contains a list of 100 statically created objects, clicking on an item in the list causes an animated transition to the detail screen.
+When entering the detail screen, the image frame rotates for two seconds. When the user scrolls the text, the photo and the text
 moves at the same time, the background shrinks and a button appears.
 ## Directory structure
 
@@ -36,7 +36,7 @@ All tests were performed on a physical device.
 #### App Frame timing
 The scroll tests were run five times and the results are based on the data from the five tests.
 
-Macrobenchmark tests were written for XML & Jetpack-Compose to obtain frame timing data while scrolling the list: 
+Macrobenchmark tests were written for XML & Jetpack-Compose to get frame timing data while scrolling the list: 
 * [Frame Timing Jetpack-Compose](./compose/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt)
 * [Frame Timing XML](./xml/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt)
 
@@ -57,13 +57,13 @@ The startup time of the Flutter application was obtained using a command in the 
 <pre>
 flutter run --trace-startup --profile
 </pre>
-This command is necessary to [measuare](https://docs.flutter.dev/testing/debugging#measuring-app-startup-time) the startup time of the app.
-An [JSON](tests/app_startup_iter_5/flutter_startup_5_iter) file was obtained and the value `timeToFirstFrameRasterizedMicros` was taken. The tests were run five times and obtained
-maximum, minimum and median startup times for the app.
+This command is required to [measure](https://docs.flutter.dev/testing/debugging#measuring-app-startup-time) the startup time of the app.
+An [JSON](tests/app_startup_iter_5/flutter_startup_5_iter) file was obtained and the value `timeToFirstFrameRasterizedMicros` was taken. The tests were run five times and calculated the
+maximum, minimum and median startup time of the app.
 
 #### Benchmark app using a Flashlight
 
-The [Script](./tests/app_interaction_script/script.ts) was written and the tests were run ten times on a physical device.
+The [script](./tests/app_interaction_script/script.ts) was written and the tests were run ten times on a physical device.
 Using the `Flashlight` library, application performance data, average FPS, CPU, RAM and an overall score on a scale of 100 were obtained.
 
 * [Marcobenchmarks](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview)
