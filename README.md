@@ -64,7 +64,7 @@ maximum, minimum and median startup times for the app.
 
 #### Benchmark app using a Flashlight
 
-The [Script](./tests/app_interaction_script) was written and the tests were run ten times on a physical device.
+The [Script](./tests/app_interaction_script/script.ts) was written and the tests were run ten times on a physical device.
 Using the `Flashlight` library, application performance data, average FPS, CPU, RAM and an overall score on a scale of 100 were obtained.
 
 * [Marcobenchmarks](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview)
