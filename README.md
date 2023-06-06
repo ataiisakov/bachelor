@@ -37,7 +37,7 @@ All tests were performed on a physical device.
 The scroll tests were run five times and the results are based on the data from the five tests.
 
 Macrobenchmark tests were written for XML & Jetpack-Compose to obtain frame timing data while scrolling the list: 
-* [Frame Timing Jetpack-Compose](./compose/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt),
+* [Frame Timing Jetpack-Compose](./compose/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt)
 * [Frame Timing XML](./xml/benchmark/src/main/java/com/example/benchmark/FrameTimingBenchmark.kt)
 
 The [integration test](./app_flutter/integration_test/scroll_trace_test.dart) was written for Flutter.
